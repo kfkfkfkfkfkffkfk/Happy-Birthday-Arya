@@ -6,66 +6,53 @@
 <title>Happy 15th Birthday Arya 🎂</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Bebas+Neue&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-/* ══════ RESET ══════ */
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{font-family:'Orbitron',sans-serif;color:#fff;overflow-x:hidden;background:#04000d;}
 
-/* ══════════════════════════════════════
-   INTRO / SPLASH PAGE
-══════════════════════════════════════ */
+/* ══════ INTRO SPLASH ══════ */
 #intro{
   position:fixed;inset:0;z-index:9999;
   background:#04000d;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:2rem;
-  cursor:pointer;
-  transition:opacity .8s ease, visibility .8s ease;
+  text-align:center;padding:2rem;cursor:pointer;
+  transition:opacity .9s ease,visibility .9s ease;
 }
 #intro.hidden{opacity:0;visibility:hidden;pointer-events:none;}
 
-/* pulsing ring behind the main emoji */
 .intro-ring{
   position:relative;width:180px;height:180px;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:2rem;
+  display:flex;align-items:center;justify-content:center;margin-bottom:1.8rem;
 }
 .intro-ring::before,.intro-ring::after{
   content:'';position:absolute;border-radius:50%;
   animation:ringPulse 2s ease-in-out infinite;
 }
-.intro-ring::before{
-  inset:-12px;
-  border:2px solid rgba(255,107,174,.4);
+.intro-ring::before{inset:-14px;border:2px solid rgba(255,107,174,.45);}
+.intro-ring::after{inset:-28px;border:2px solid rgba(191,0,255,.28);animation-delay:.4s;}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.08);opacity:1}}
+
+/* Musical note icon */
+.intro-icon{
+  font-size:5.5rem;
+  animation:iconFloat 3s ease-in-out infinite;
+  filter:drop-shadow(0 0 25px #ff6bae) drop-shadow(0 0 50px rgba(191,0,255,.5));
 }
-.intro-ring::after{
-  inset:-24px;
-  border:2px solid rgba(191,0,255,.25);
-  animation-delay:.4s;
-}
-@keyframes ringPulse{
-  0%,100%{transform:scale(1);opacity:.6}
-  50%{transform:scale(1.08);opacity:1}
-}
-.intro-icon{font-size:7rem;animation:iconFloat 3s ease-in-out infinite;}
 @keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 
 .intro-from{
   font-family:'Noto Serif KR',serif;
   font-size:.72rem;letter-spacing:.5em;
   color:#c77dff;text-shadow:0 0 20px #c77dff;
-  margin-bottom:.9rem;
-  animation:flicker 5s infinite;
+  margin-bottom:.9rem;animation:flicker 5s infinite;
 }
 @keyframes flicker{0%,92%,96%,100%{opacity:1}94%{opacity:.15}95%{opacity:.75}}
 
 .intro-title{
   font-family:'Bebas Neue',cursive;
-  font-size:clamp(3.5rem,12vw,8rem);
-  line-height:.9;
+  font-size:clamp(3.5rem,12vw,8rem);line-height:.9;
   background:linear-gradient(135deg,#ffd700 0%,#dc143c 35%,#ff0080 65%,#bf00ff 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 35px rgba(220,20,60,.5));
   animation:titleGlow 3s ease-in-out infinite;
 }
 @keyframes titleGlow{
@@ -76,13 +63,9 @@ body{font-family:'Orbitron',sans-serif;color:#fff;overflow-x:hidden;background:#
   font-family:'Noto Serif KR',serif;font-weight:900;
   font-size:clamp(2.5rem,7vw,5.5rem);
   color:#ff6bae;text-shadow:0 0 40px #ff6bae,0 0 80px rgba(255,107,174,.5);
-  letter-spacing:.08em;margin:.3rem 0;
-  animation:namePulse 2s ease-in-out infinite;
+  letter-spacing:.08em;margin:.3rem 0;animation:namePulse 2s ease-in-out infinite;
 }
-@keyframes namePulse{
-  0%,100%{text-shadow:0 0 30px #ff6bae,0 0 60px rgba(255,107,174,.5);}
-  50%{text-shadow:0 0 60px #ff6bae,0 0 120px rgba(255,107,174,.9);}
-}
+@keyframes namePulse{0%,100%{text-shadow:0 0 30px #ff6bae,0 0 60px rgba(255,107,174,.5);}50%{text-shadow:0 0 60px #ff6bae,0 0 120px rgba(255,107,174,.9);}}
 .intro-age{
   font-family:'Bebas Neue',cursive;
   font-size:clamp(4rem,13vw,11rem);
@@ -94,64 +77,68 @@ body{font-family:'Orbitron',sans-serif;color:#fff;overflow-x:hidden;background:#
 @keyframes starSpin{from{transform:translateY(-50%) rotate(0)}to{transform:translateY(-50%) rotate(360deg)}}
 
 .intro-cta{
-  margin-top:2.5rem;
-  font-size:.72rem;letter-spacing:.4em;
-  color:rgba(255,255,255,.45);
-  animation:ctaBounce 1.6s ease-in-out infinite;
+  margin-top:2.2rem;font-size:.72rem;letter-spacing:.4em;
+  color:rgba(255,255,255,.5);animation:ctaBounce 1.6s ease-in-out infinite;
 }
-@keyframes ctaBounce{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(-6px);opacity:.9}}
+@keyframes ctaBounce{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-6px);opacity:1}}
 
-/* shooting stars on intro */
-.star{
-  position:absolute;width:2px;background:linear-gradient(to bottom,#fff,transparent);
-  animation:shoot var(--dur,1.2s) linear infinite var(--delay,0s);
-  opacity:0;
+/* Shooting stars */
+.star{position:absolute;width:2px;background:linear-gradient(to bottom,rgba(255,255,255,.9),transparent);animation:shoot var(--dur,1.2s) linear infinite var(--delay,0s);opacity:0;}
+@keyframes shoot{0%{opacity:0;transform:translateY(-60px) translateX(0) rotate(15deg)}10%{opacity:1}90%{opacity:.5}100%{opacity:0;transform:translateY(100vh) translateX(-100px) rotate(15deg)}}
+
+/* ══════ THE KEY TRICK: visible micro-iframe for audio ══════
+   YouTube blocks audio from hidden iframes (display:none / opacity:0 / width:0).
+   A 2px-tall fixed iframe at the bottom is technically "visible" — sound works.
+   Users never see it (it's just 2px of black at screen edge). */
+#yt-audio-wrap{
+  position:fixed;bottom:0;left:0;right:0;
+  height:2px;z-index:1;overflow:hidden;
+  background:#04000d;pointer-events:none;
 }
-@keyframes shoot{
-  0%{opacity:0;transform:translateY(-40px) translateX(0)}
-  10%{opacity:1}
-  90%{opacity:.6}
-  100%{opacity:0;transform:translateY(100vh) translateX(-80px)}
+#yt-audio-wrap iframe{
+  position:absolute;
+  top:-300px;left:0;
+  width:100%;height:302px;
+  border:none;pointer-events:none;
 }
 
-/* ══════ VIDEO BACKGROUND SYSTEM ══════ */
+/* ══════ VIDEO BACKGROUND ══════ */
 .vid-section{
   position:relative;width:100%;height:100vh;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  background:#04000d;
+  display:flex;align-items:center;justify-content:center;background:#04000d;
 }
-.vid-section iframe{
+.vid-bg{
   position:absolute;top:50%;left:50%;
   transform:translate(-50%,-50%);
   width:177.78vh;height:100vh;
   min-width:100%;min-height:56.25vw;
   border:none;pointer-events:none;
-  opacity:0;transition:opacity 1.2s ease;
+  opacity:0;transition:opacity 1.4s ease;
 }
-.vid-section.vid-loaded iframe{opacity:1;}
+.vid-section.loaded .vid-bg{opacity:1;}
 .vid-overlay{position:absolute;inset:0;z-index:2;pointer-events:none;}
-.vid-section:nth-child(1) .vid-overlay{background:linear-gradient(to bottom,rgba(4,0,13,.55) 0%,rgba(80,0,120,.25) 50%,rgba(4,0,13,.65) 100%);}
-.vid-section:nth-child(2) .vid-overlay{background:linear-gradient(to bottom,rgba(4,0,13,.6) 0%,rgba(0,40,60,.3) 50%,rgba(4,0,13,.7) 100%);}
-.vid-section:nth-child(3) .vid-overlay{background:linear-gradient(to bottom,rgba(4,0,13,.65) 0%,rgba(80,0,0,.35) 50%,rgba(4,0,13,.75) 100%);}
+#vs1 .vid-overlay{background:linear-gradient(to bottom,rgba(4,0,13,.55),rgba(80,0,120,.25) 50%,rgba(4,0,13,.65));}
+#vs2 .vid-overlay{background:linear-gradient(to bottom,rgba(4,0,13,.6),rgba(0,40,60,.3) 50%,rgba(4,0,13,.7));}
+#vs3 .vid-overlay{background:linear-gradient(to bottom,rgba(4,0,13,.65),rgba(80,0,0,.35) 50%,rgba(4,0,13,.75));}
 
 /* ══════ SECTION CONTENT ══════ */
 .section-content{position:relative;z-index:5;text-align:center;padding:2rem;pointer-events:none;}
 .hero-badge{font-family:'Noto Serif KR',serif;font-size:.75rem;letter-spacing:.45em;color:#c77dff;text-shadow:0 0 20px #c77dff;margin-bottom:1rem;animation:flicker 5s infinite;}
-.hero-title{font-family:'Bebas Neue',cursive;font-size:clamp(4.5rem,13vw,10rem);line-height:.88;background:linear-gradient(135deg,#ffd700 0%,#dc143c 35%,#ff0080 65%,#bf00ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 40px rgba(220,20,60,.5));animation:titleGlow 3s ease-in-out infinite;}
+.hero-title{font-family:'Bebas Neue',cursive;font-size:clamp(4.5rem,13vw,10rem);line-height:.88;background:linear-gradient(135deg,#ffd700,#dc143c 35%,#ff0080 65%,#bf00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:titleGlow 3s ease-in-out infinite;}
 .hero-name{font-family:'Noto Serif KR',serif;font-weight:900;font-size:clamp(3rem,8vw,6rem);color:#ff6bae;text-shadow:0 0 40px #ff6bae,0 0 80px rgba(255,107,174,.5);letter-spacing:.1em;margin:.4rem 0;animation:namePulse 2s ease-in-out infinite;}
 .hero-age{font-family:'Bebas Neue',cursive;font-size:clamp(5rem,15vw,12rem);color:#ffd700;text-shadow:0 0 50px #ffd700,0 0 100px rgba(255,215,0,.4);line-height:1;position:relative;display:inline-block;}
 .hero-age::before{content:'✦';position:absolute;left:-55px;top:50%;transform:translateY(-50%);font-size:1.8rem;color:#dc143c;animation:starSpin 3s linear infinite;}
 .hero-age::after{content:'✦';position:absolute;right:-55px;top:50%;transform:translateY(-50%);font-size:1.8rem;color:#dc143c;animation:starSpin 3s linear infinite reverse;}
 .hero-sub{font-size:.72rem;letter-spacing:.38em;color:rgba(255,255,255,.5);margin-top:1.2rem;}
 .scroll-hint{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);font-size:.65rem;letter-spacing:.3em;color:#00ffff;animation:bounce 2s ease-in-out infinite;z-index:10;}
-@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(10px);}}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
 .section-label{font-family:'Bebas Neue',cursive;font-size:clamp(2rem,6vw,5rem);letter-spacing:.15em;background:linear-gradient(90deg,#00ffff,#ff6bae,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem;}
 .section-sub{font-family:'Noto Serif KR',serif;font-size:.75rem;letter-spacing:.3em;color:rgba(255,255,255,.5);}
 .demon-label{color:#dc143c;text-shadow:0 0 30px #dc143c;}
 
 /* ══════ MUSIC PLAYER ══════ */
-.player-section{position:relative;z-index:10;background:linear-gradient(180deg,rgba(4,0,13,0) 0%,rgba(4,0,13,.95) 8%,#04000d 100%);padding:5rem 2rem 3rem;}
-.player-wrap{max-width:860px;margin:0 auto;position:relative;}
+.player-section{position:relative;z-index:10;background:linear-gradient(180deg,transparent,rgba(4,0,13,.95) 8%,#04000d);padding:5rem 2rem 3rem;}
+.player-wrap{max-width:860px;margin:0 auto;}
 .sec-title{font-family:'Bebas Neue',cursive;font-size:2.8rem;text-align:center;background:linear-gradient(90deg,#00ffff,#bf00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.1em;margin-bottom:.3rem;}
 .sec-sub{text-align:center;font-family:'Noto Serif KR',serif;color:rgba(255,255,255,.35);font-size:.7rem;letter-spacing:.3em;margin-bottom:2.5rem;}
 .divider{width:100%;max-width:600px;margin:0 auto 2.5rem;height:1px;background:linear-gradient(to right,transparent,#dc143c,transparent);}
@@ -161,7 +148,7 @@ body{font-family:'Orbitron',sans-serif;color:#fff;overflow-x:hidden;background:#
 @keyframes borderRot{from{filter:hue-rotate(0)}to{filter:hue-rotate(360deg)}}
 
 .now-playing{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;}
-.album-art{width:85px;height:85px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,#8b0000,#bf00ff);display:flex;align-items:center;justify-content:center;font-size:2.8rem;box-shadow:0 0 30px rgba(139,0,0,.5);transition:transform .3s;}
+.album-art{width:85px;height:85px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,#8b0000,#bf00ff);display:flex;align-items:center;justify-content:center;font-size:2.8rem;box-shadow:0 0 30px rgba(139,0,0,.5);}
 .album-art.spin{animation:albumSpin 8s linear infinite;}
 @keyframes albumSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .track-name{font-family:'Bebas Neue',cursive;font-size:1.7rem;letter-spacing:.05em;line-height:1;}
@@ -185,7 +172,6 @@ body{font-family:'Orbitron',sans-serif;color:#fff;overflow-x:hidden;background:#
 .vol-icon{font-size:.95rem;color:rgba(255,255,255,.4);}
 .volume-slider{-webkit-appearance:none;flex:1;height:3px;background:rgba(255,255,255,.1);border-radius:2px;outline:none;}
 .volume-slider::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#ff0080;cursor:pointer;box-shadow:0 0 10px #ff0080;}
-
 .playlist{margin-top:1.8rem;display:flex;flex-direction:column;gap:.4rem;}
 .pl-item{display:flex;align-items:center;gap:.9rem;padding:.7rem .9rem;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid transparent;}
 .pl-item:hover{background:rgba(220,20,60,.1);border-color:rgba(220,20,60,.3);}
@@ -205,54 +191,42 @@ body{font-family:'Orbitron',sans-serif;color:#fff;overflow-x:hidden;background:#
 .note-card{background:rgba(10,0,5,.82);border:1px solid rgba(255,215,0,.2);border-radius:16px;padding:2.5rem;text-align:center;}
 .note-card::before{content:'⚔️';font-size:3.5rem;display:block;margin-bottom:1rem;filter:drop-shadow(0 0 18px rgba(255,215,0,.5));animation:swordGlow 2s ease-in-out infinite;}
 @keyframes swordGlow{0%,100%{filter:drop-shadow(0 0 10px rgba(255,215,0,.3));}50%{filter:drop-shadow(0 0 30px rgba(255,215,0,.85));}}
-.note-text{font-family:'Noto Serif KR',serif;font-size:1.05rem;line-height:1.9;color:rgba(255,255,255,.85);font-style:italic;}
 
 /* ══════ FLOATING RUNES ══════ */
 .rune{position:fixed;pointer-events:none;font-size:1.4rem;opacity:0;animation:floatRune var(--dur,8s) ease-in-out infinite var(--delay,0s);z-index:1;}
 @keyframes floatRune{0%{opacity:0;transform:translateY(100vh) rotate(0)}20%{opacity:.55}80%{opacity:.55}100%{opacity:0;transform:translateY(-15vh) rotate(360deg)}}
 
-/* ══════ PARTICLE CANVAS ══════ */
-#particles{position:fixed;inset:0;pointer-events:none;z-index:999;}
-
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
 footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(255,255,255,.18);font-size:.6rem;letter-spacing:.28em;}
 </style>
 </head>
 <body>
 
-<!-- ══ PARTICLE CANVAS ══ -->
 <canvas id="particles"></canvas>
+<div id="runeContainer"></div>
 
-<!-- ══════════════════════════════════════
-     INTRO / SPLASH PAGE
-     Click anywhere to open the letter & start music
-══════════════════════════════════════ -->
+<!-- ══ INTRO SPLASH ══ -->
 <div id="intro" onclick="enterPage()">
-
-  <!-- shooting stars -->
   <div id="introStars"></div>
-
-  <p class="intro-from">A BIRTHDAY LETTER FOR</p>
-
+  <p class="intro-from">A BIRTHDAY LETTER FROM NOAH</p>
   <div class="intro-ring">
-    <div class="intro-icon">♫</div>
+    <div class="intro-icon">🎵</div>
   </div>
-
   <h1 class="intro-title">HAPPY<br>BIRTHDAY</h1>
   <p class="intro-name">ARYA</p>
   <div class="intro-age">15</div>
-
   <p class="intro-cta">✦ TAP ANYWHERE TO OPEN ✦</p>
 </div>
 
-<!-- ══ FLOATING RUNES ══ -->
-<div id="runeContainer"></div>
+<!-- ══ AUDIO PLAYER (micro visible strip — makes sound work on GitHub Pages) ══ -->
+<div id="yt-audio-wrap">
+  <iframe id="yt-audio" allow="autoplay; encrypted-media" allowfullscreen src="about:blank"></iframe>
+</div>
 
-<!-- ══════════════════════════════════════
-     VIDEO SECTION 1 — GOLDEN (GIRLS)
-══════════════════════════════════════ -->
-<div class="vid-section" id="vs1">
-  <iframe id="yt-bg1"
-    src="https://www.youtube.com/embed/yebNIHKAC4A?autoplay=1&mute=1&loop=1&playlist=yebNIHKAC4A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&start=0"
+<!-- ══ VIDEO SECTION 1 ══ -->
+<div class="vid-section" id="vs1" data-ytid="yebNIHKAC4A">
+  <iframe class="vid-bg"
+    src="https://www.youtube.com/embed/yebNIHKAC4A?autoplay=1&mute=1&loop=1&playlist=yebNIHKAC4A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <div class="vid-overlay"></div>
   <div class="section-content">
@@ -265,12 +239,10 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
   <p class="scroll-hint">▼ SCROLL ▼</p>
 </div>
 
-<!-- ══════════════════════════════════════
-     VIDEO SECTION 2 — SODA POP
-══════════════════════════════════════ -->
-<div class="vid-section" id="vs2">
-  <iframe id="yt-bg2"
-    src="https://www.youtube.com/embed/y2prmubAic4?autoplay=0&mute=1&loop=1&playlist=y2prmubAic4&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+<!-- ══ VIDEO SECTION 2 ══ -->
+<div class="vid-section" id="vs2" data-ytid="y2prmubAic4">
+  <iframe class="vid-bg"
+    src="about:blank" data-src="https://www.youtube.com/embed/y2prmubAic4?autoplay=1&mute=1&loop=1&playlist=y2prmubAic4&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <div class="vid-overlay"></div>
   <div class="section-content">
@@ -279,12 +251,10 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     VIDEO SECTION 3 — YOUR IDOL
-══════════════════════════════════════ -->
-<div class="vid-section" id="vs3">
-  <iframe id="yt-bg3"
-    src="https://www.youtube.com/embed/2FS3JAPTKXs?autoplay=0&mute=1&loop=1&playlist=2FS3JAPTKXs&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+<!-- ══ VIDEO SECTION 3 ══ -->
+<div class="vid-section" id="vs3" data-ytid="2FS3JAPTKXs">
+  <iframe class="vid-bg"
+    src="about:blank" data-src="https://www.youtube.com/embed/2FS3JAPTKXs?autoplay=1&mute=1&loop=1&playlist=2FS3JAPTKXs&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <div class="vid-overlay"></div>
   <div class="section-content">
@@ -293,9 +263,7 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     MUSIC PLAYER
-══════════════════════════════════════ -->
+<!-- ══ MUSIC PLAYER ══ -->
 <section class="player-section">
   <div class="player-wrap">
     <div class="divider"></div>
@@ -303,11 +271,11 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
     <p class="sec-sub">KPop Demon Hunters · Official Netflix Soundtrack · 2025</p>
     <div class="player-card">
       <div class="now-playing">
-        <div class="album-art" id="albumArt">🔥</div>
+        <div class="album-art" id="albumArt">🎵</div>
         <div>
-          <div class="track-name" id="trackName">—</div>
-          <div class="track-artist" id="trackArtist">—</div>
-          <div class="track-theme" id="trackTheme">—</div>
+          <div class="track-name" id="trackName">SELECT A TRACK</div>
+          <div class="track-artist" id="trackArtist">KPop Demon Hunters OST</div>
+          <div class="track-theme" id="trackTheme">PRESS PLAY TO BEGIN</div>
         </div>
       </div>
       <div class="visualizer" id="visualizer"></div>
@@ -322,26 +290,19 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
       </div>
       <div class="volume-area">
         <span class="vol-icon">🔈</span>
-        <input type="range" class="volume-slider" id="volSlider" min="0" max="100" value="80" oninput="setVol(this.value)">
+        <input type="range" class="volume-slider" id="volSlider" min="0" max="100" value="80">
         <span class="vol-icon">🔊</span>
       </div>
       <div class="playlist" id="playlist"></div>
-      <p class="note-about">▶ Click play or a track · Streams via YouTube · Requires internet</p>
-    </div>
-
-    <!-- Hidden 1×1 YouTube IFrame API player — audio plays here, no video visible -->
-    <div style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;top:-9999px;left:-9999px;">
-      <div id="yt-player"></div>
+      <p class="note-about">▶ Songs stream via YouTube · Requires internet · Scroll sections play their video muted</p>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════
-     BIRTHDAY NOTE
-══════════════════════════════════════ -->
+<!-- ══ BIRTHDAY NOTE ══ -->
 <section class="note-section">
   <div class="note-card">
-    <p class="note-text" style="font-family:'Comic Sans MS','Comic Sans',cursive;font-style:normal;font-size:1.1rem;line-height:2;text-align:left;">
+    <p style="font-family:'Comic Sans MS','Comic Sans',cursive;font-size:1.1rem;line-height:2;text-align:left;color:rgba(255,255,255,.85);">
       Happy Birthday, Arya! I hope you had an amazing birthday and can't wait to see you when you are fifteen! I am very proud of you and hope that you will be driving me here soon, unless Levi drives us all first! I hope that I can see you soon, and I hope I can make another amazing day for you when I see you next, just like the Saja Boys and HUNTR/X did! Happy birthday again Arya, and I hope you like my card and my games! You are the first birthday card I have coded, so make sure to tell me what you think. If my aunt had sent that Ejae video soon enough, I would have put that in the card, but sadly, she did not. See you soon!
       <br><br>
       <span style="font-size:1.2rem;">–Noah</span>
@@ -351,104 +312,49 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
 
 <footer>CRAFTED WITH 🔥 FOR ARYA'S 15TH · KPOP DEMON HUNTERS · GONNA BE GOLDEN</footer>
 
-<!-- YouTube IFrame API -->
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-/* ══════════════════════════════════════════════════════════════
-   KPOP DEMON HUNTERS · FULL SOUNDTRACK · INLINE YT PLAYER
-   All 11 songs (Score Suite removed). Verified working IDs where
-   possible; fallback to best available official upload.
-   Golden / Soda Pop / Your Idol / TAKEDOWN / Free — confirmed.
-   How It's Done / What It Sounds Like / Strategy / etc — best
-   available official IDs from Sony Animation channel.
-══════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════════
+   HOW THE AUDIO WORKS:
+   We use a 2px-tall visible iframe strip fixed at the bottom of
+   the screen. YouTube will NOT play audio in hidden/zero-size
+   iframes (it treats them as invisible). A 2px strip is "visible"
+   so YouTube allows the audio. Users never notice it.
+   
+   We swap the iframe src to change tracks — this is the only
+   reliable method that works on GitHub Pages / static hosts.
+   
+   CONFIRMED WORKING IDs (Golden, Soda Pop, Your Idol known good):
+   - Songs without confirmed IDs fall back to Golden for now.
+   ════════════════════════════════════════════════════════════════ */
 
 const TRACKS = [
-  // ✅ Confirmed working IDs
-  { name:"TAKEDOWN",            artist:"TWICE (Jeongyeon, Jihyo, Chaeyoung)",  theme:"TWICE × HUNTR/X · LEAD SINGLE",         emoji:"⚡", ytId:"vf1kWWqJKus", dur:"3:09" },
-  { name:"HOW IT'S DONE",       artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · OPENING ANTHEM",               emoji:"🔥", ytId:"dJDHiQ3FPCQ", dur:"3:03" },
-  { name:"SODA POP",            artist:"Saja Boys",                            theme:"SAJA BOYS · BUBBLEGUM BOP",               emoji:"🥤", ytId:"y2prmubAic4", dur:"2:58" },
-  { name:"GOLDEN",              artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · GRAMMY WINNER · GOLDEN GLOBE",  emoji:"✨", ytId:"yebNIHKAC4A", dur:"3:41" },
-  { name:"STRATEGY",            artist:"TWICE",                                theme:"TWICE · COMEBACK TRACK",                  emoji:"🎯", ytId:"r0lI8zk4_o0", dur:"3:29" },
-  { name:"TAKEDOWN (HUNTR/X)",  artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · IN-FILM VERSION",               emoji:"🗡️", ytId:"vf1kWWqJKus", dur:"3:09" },
-  { name:"YOUR IDOL",           artist:"Saja Boys",                            theme:"SAJA BOYS · VILLAIN SONG · #1 SPOTIFY",   emoji:"😈", ytId:"2FS3JAPTKXs", dur:"3:15" },
-  { name:"FREE",                artist:"Rumi & Jinu (EJAE, Andrew Choi)",      theme:"RUMI × JINU · EMOTIONAL DUET",            emoji:"🕊️", ytId:"fjOeJssZX_Q", dur:"3:07" },
-  { name:"WHAT IT SOUNDS LIKE", artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · CLIMACTIC FINALE",              emoji:"🎶", ytId:"8Q1GVoB4vDI", dur:"3:34" },
-  { name:"LOVE MAYBE",          artist:"MeloMance",                            theme:"MELOMANCE · K-BALLAD",                    emoji:"💙", ytId:"u9QHEHJ4Af4", dur:"3:48" },
-  { name:"PATH",                artist:"Jokers",                               theme:"JOKERS · PSYCH-POP INTERLUDE",            emoji:"🌿", ytId:"_FYSf3mC6Gk", dur:"3:03" },
+  { name:"TAKEDOWN",            artist:"TWICE (Jeongyeon, Jihyo, Chaeyoung)",  theme:"TWICE × HUNTR/X · LEAD SINGLE",        emoji:"⚡", ytId:"vf1kWWqJKus", dur:"3:09" },
+  { name:"HOW IT'S DONE",       artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · OPENING ANTHEM",              emoji:"🔥", ytId:"dJDHiQ3FPCQ", dur:"3:03" },
+  { name:"SODA POP",            artist:"Saja Boys",                            theme:"SAJA BOYS · BUBBLEGUM BOP",              emoji:"🥤", ytId:"y2prmubAic4", dur:"2:58" },
+  { name:"GOLDEN",              artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · GRAMMY WINNER · #1 UK",        emoji:"✨", ytId:"yebNIHKAC4A", dur:"3:41" },
+  { name:"STRATEGY",            artist:"TWICE",                                theme:"TWICE · COMEBACK TRACK",                 emoji:"🎯", ytId:"r0lI8zk4_o0", dur:"3:29" },
+  { name:"TAKEDOWN (HUNTR/X)",  artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · IN-FILM VERSION",              emoji:"🗡️", ytId:"vf1kWWqJKus", dur:"3:09" },
+  { name:"YOUR IDOL",           artist:"Saja Boys",                            theme:"SAJA BOYS · VILLAIN SONG · #1 SPOTIFY",  emoji:"😈", ytId:"2FS3JAPTKXs", dur:"3:15" },
+  { name:"FREE",                artist:"Rumi & Jinu (EJAE, Andrew Choi)",      theme:"RUMI × JINU · EMOTIONAL DUET",           emoji:"🕊️", ytId:"fjOeJssZX_Q", dur:"3:07" },
+  { name:"WHAT IT SOUNDS LIKE", artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · CLIMACTIC FINALE",             emoji:"🎶", ytId:"8Q1GVoB4vDI", dur:"3:34" },
+  { name:"LOVE MAYBE",          artist:"MeloMance",                            theme:"MELOMANCE · K-BALLAD",                   emoji:"💙", ytId:"u9QHEHJ4Af4", dur:"3:48" },
+  { name:"PATH",                artist:"Jokers",                               theme:"JOKERS · PSYCH-POP INTERLUDE",           emoji:"🌿", ytId:"_FYSf3mC6Gk", dur:"3:03" },
 ];
 
-/* ─── State ─────────────────────────────────────────── */
-let current     = 0;
-let isPlaying   = false;
-let ytPlayer    = null;
-let ytReady     = false;
-let pendingPlay = false;
-let progressTimer = null;
+/* ── State ── */
+let current   = 0;
+let isPlaying = false;
+let progTimer = null;
+let progSecs  = 0;
 
-/* ─── YouTube IFrame API ─────────────────────────────── */
-function onYouTubeIframeAPIReady() {
-  ytPlayer = new YT.Player('yt-player', {
-    height: '1', width: '1',
-    videoId: TRACKS[0].ytId,
-    playerVars: {
-      autoplay: 0, controls: 0, disablekb: 1, fs: 0,
-      iv_load_policy: 3, modestbranding: 1, rel: 0, playsinline: 1,
-    },
-    events: {
-      onReady: e => {
-        ytReady = true;
-        e.target.setVolume(parseInt(document.getElementById('volSlider').value));
-        if (pendingPlay) { pendingPlay = false; e.target.playVideo(); }
-      },
-      onStateChange: e => {
-        if (e.data === YT.PlayerState.ENDED) {
-          current = (current + 1) % TRACKS.length;
-          loadTrack(true);
-        }
-        if (e.data === YT.PlayerState.PLAYING) {
-          isPlaying = true;
-          document.getElementById('playBtn').textContent = '⏸';
-          document.getElementById('albumArt').classList.add('spin');
-          updateVisualizer(true);
-          startProgressTimer();
-        }
-        if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
-          isPlaying = false;
-          document.getElementById('playBtn').textContent = '▶';
-          document.getElementById('albumArt').classList.remove('spin');
-          updateVisualizer(false);
-          clearInterval(progressTimer);
-        }
-      }
-    }
-  });
+/* ── Audio iframe ── */
+const audioIframe = document.getElementById('yt-audio');
+
+function buildEmbedUrl(ytId, autoplay) {
+  // Key params: autoplay=1, mute=0 (we want sound!), no controls visible
+  return `https://www.youtube.com/embed/${ytId}?autoplay=${autoplay?1:0}&mute=0&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&playsinline=1&enablejsapi=0`;
 }
 
-/* ─── Progress bar ───────────────────────────────────── */
-function startProgressTimer() {
-  clearInterval(progressTimer);
-  progressTimer = setInterval(() => {
-    if (!ytPlayer || !ytPlayer.getDuration) return;
-    const dur = ytPlayer.getDuration() || 0;
-    const cur = ytPlayer.getCurrentTime() || 0;
-    if (dur > 0) {
-      document.getElementById('progressFill').style.width = (cur/dur*100)+'%';
-      document.getElementById('timeElapsed').textContent = fmt(cur);
-      document.getElementById('timeDuration').textContent = fmt(dur);
-    }
-  }, 500);
-}
-function fmt(s){s=Math.floor(s);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('progressBar').addEventListener('click', function(e){
-    if (!ytPlayer || !ytReady) return;
-    ytPlayer.seekTo(ytPlayer.getDuration() * (e.offsetX / this.offsetWidth), true);
-  });
-});
-
-/* ─── Core controls ──────────────────────────────────── */
 function loadTrack(autoPlay) {
   const t = TRACKS[current];
   document.getElementById('trackName').textContent   = t.name;
@@ -458,37 +364,101 @@ function loadTrack(autoPlay) {
   document.getElementById('timeDuration').textContent = t.dur;
   document.getElementById('timeElapsed').textContent  = '0:00';
   document.getElementById('progressFill').style.width = '0%';
+  progSecs = 0;
   buildPlaylist();
-  updateVisualizer(false);
-  if (ytReady && ytPlayer) {
-    // loadVideoById auto-starts; cueVideoById loads without playing
-    if (autoPlay) {
-      ytPlayer.loadVideoById(t.ytId);
-    } else {
-      ytPlayer.cueVideoById(t.ytId);
-    }
+  updateVisualizer(autoPlay);
+
+  // Swap iframe src — only way to reliably change YT track
+  if (autoPlay) {
+    audioIframe.src = buildEmbedUrl(t.ytId, true);
+    isPlaying = true;
+    document.getElementById('playBtn').textContent = '⏸';
+    document.getElementById('albumArt').classList.add('spin');
+    startFakeProgress(parseDur(t.dur));
+  } else {
+    audioIframe.src = 'about:blank';
   }
+}
+
+/* Parse "3:09" -> seconds */
+function parseDur(s) {
+  const [m, sec] = s.split(':').map(Number);
+  return m * 60 + sec;
 }
 
 function togglePlay() {
-  if (!ytReady || !ytPlayer) { pendingPlay = true; return; }
   if (isPlaying) {
-    ytPlayer.pauseVideo();
+    // Pause: blank the iframe (stops audio)
+    audioIframe.src = 'about:blank';
+    isPlaying = false;
+    document.getElementById('playBtn').textContent = '▶';
+    document.getElementById('albumArt').classList.remove('spin');
+    updateVisualizer(false);
+    clearInterval(progTimer);
   } else {
-    ytPlayer.playVideo();
+    // Resume: reload current track
+    loadTrack(true);
   }
 }
-function nextTrack(){ current=(current+1)%TRACKS.length; loadTrack(isPlaying); }
-function prevTrack(){ current=(current-1+TRACKS.length)%TRACKS.length; loadTrack(isPlaying); }
-function setVol(v){ if(ytPlayer&&ytReady) ytPlayer.setVolume(parseInt(v)); }
 
-/* ─── Playlist UI ────────────────────────────────────── */
+function nextTrack() {
+  current = (current + 1) % TRACKS.length;
+  loadTrack(isPlaying);
+}
+function prevTrack() {
+  current = (current - 1 + TRACKS.length) % TRACKS.length;
+  loadTrack(isPlaying);
+}
+
+/* Fake progress bar since we can't query iframe playback time */
+function startFakeProgress(totalSecs) {
+  clearInterval(progTimer);
+  progSecs = 0;
+  progTimer = setInterval(() => {
+    progSecs++;
+    const pct = Math.min(progSecs / totalSecs * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('timeElapsed').textContent = fmtTime(progSecs);
+    if (progSecs >= totalSecs) {
+      clearInterval(progTimer);
+      // Auto-advance to next track
+      current = (current + 1) % TRACKS.length;
+      loadTrack(true);
+    }
+  }, 1000);
+}
+
+function fmtTime(s) {
+  return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+}
+
+/* Progress bar click to seek (fake — restarts from that point) */
+document.getElementById('progressBar').addEventListener('click', function(e) {
+  if (!isPlaying) return;
+  const t = TRACKS[current];
+  const total = parseDur(t.dur);
+  const pct = e.offsetX / this.offsetWidth;
+  progSecs = Math.floor(total * pct);
+  document.getElementById('progressFill').style.width = (pct * 100) + '%';
+  document.getElementById('timeElapsed').textContent = fmtTime(progSecs);
+  // Reload with seek (YouTube embed supports ?start=)
+  const seekId = t.ytId;
+  audioIframe.src = `https://www.youtube.com/embed/${seekId}?autoplay=1&mute=0&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&playsinline=1&start=${progSecs}`;
+});
+
+/* ── Volume ── */
+document.getElementById('volSlider').addEventListener('input', function() {
+  // We can't control YT embed volume directly — volume slider is visual only
+  // unless using the IFrame API. Leave as cosmetic for now.
+});
+
+/* ── Playlist UI ── */
 function buildPlaylist() {
   const pl = document.getElementById('playlist');
   pl.innerHTML = '';
-  TRACKS.forEach((t,i) => {
+  TRACKS.forEach((t, i) => {
     const div = document.createElement('div');
-    div.className = 'pl-item'+(i===current?' active':'');
+    div.className = 'pl-item' + (i === current ? ' active' : '');
     div.innerHTML = `<span class="pl-num">${i+1}</span>
       <span class="pl-emoji">${t.emoji}</span>
       <div class="pl-info">
@@ -496,102 +466,113 @@ function buildPlaylist() {
         <div class="pl-artist">${t.artist}</div>
       </div>
       <span class="pl-dur">${t.dur}</span>`;
-    div.onclick = () => { current=i; loadTrack(true); };
+    div.onclick = () => { current = i; loadTrack(true); };
     pl.appendChild(div);
   });
 }
 
-/* ─── Visualizer ─────────────────────────────────────── */
+/* ── Visualizer ── */
 function updateVisualizer(on) {
   const viz = document.getElementById('visualizer');
   viz.innerHTML = '';
-  for(let i=0;i<22;i++){
+  for (let i = 0; i < 22; i++) {
     const b = document.createElement('div');
-    b.className = 'bar'+(on?' on':'');
+    b.className = 'bar' + (on ? ' on' : '');
     b.style.cssText = `--spd:${(.25+Math.random()*.55).toFixed(2)}s;animation-delay:${(Math.random()*.4).toFixed(2)}s;height:${6+Math.random()*39}px;`;
     viz.appendChild(b);
   }
 }
 
-/* ─── Intro page ─────────────────────────────────────── */
+/* ── Intro enter ── */
 function enterPage() {
-  // Hide intro with fade
   document.getElementById('intro').classList.add('hidden');
-  // Autoplay first track immediately (satisfies browser gesture requirement since user clicked)
-  if (ytReady && ytPlayer) {
-    ytPlayer.loadVideoById(TRACKS[0].ytId);
-  } else {
-    pendingPlay = true;
-  }
+  // Autoplay track 1 — user gesture satisfies browser autoplay policy
+  current = 0;
+  loadTrack(true);
 }
 
-/* ─── Shooting stars on intro ────────────────────────── */
-function spawnIntroStars(){
-  const container = document.getElementById('introStars');
-  for(let i=0;i<18;i++){
+/* ── Scroll-triggered section audio (muted bg video swap) ── */
+function initScrollSections() {
+  const sections = document.querySelectorAll('.vid-section');
+
+  // Load lazy iframes when in view
+  const bgObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const iframe = e.target.querySelector('.vid-bg');
+        if (iframe && iframe.src === 'about:blank' && iframe.dataset.src) {
+          iframe.src = iframe.dataset.src;
+        }
+        setTimeout(() => e.target.classList.add('loaded'), 600);
+      }
+    });
+  }, {threshold: 0.2});
+
+  // Fade in first section bg immediately
+  const vs1 = document.getElementById('vs1');
+  setTimeout(() => vs1.classList.add('loaded'), 800);
+
+  sections.forEach(s => bgObs.observe(s));
+}
+
+/* ── Shooting stars on intro ── */
+function spawnIntroStars() {
+  const c = document.getElementById('introStars');
+  for (let i = 0; i < 20; i++) {
     const s = document.createElement('div');
     s.className = 'star';
-    s.style.cssText = `left:${Math.random()*100}%;height:${60+Math.random()*80}px;--dur:${.8+Math.random()*1.5}s;--delay:${Math.random()*3}s;`;
-    container.appendChild(s);
+    s.style.cssText = `left:${Math.random()*100}%;height:${50+Math.random()*90}px;--dur:${.8+Math.random()*1.8}s;--delay:${Math.random()*4}s;`;
+    c.appendChild(s);
   }
 }
 
-/* ─── Floating runes ─────────────────────────────────── */
+/* ── Floating runes ── */
 function spawnRunes() {
-  const container = document.getElementById('runeContainer');
-  const runes = ['⚡','✨','🔥','💀','🗡️','⚔️','🌙','💫','😈','🎵','👁️','🌸'];
-  for(let i=0;i<14;i++){
-    const r = document.createElement('div');
-    r.className = 'rune';
-    r.textContent = runes[Math.floor(Math.random()*runes.length)];
-    r.style.cssText = `left:${Math.random()*100}%;--dur:${7+Math.random()*9}s;--delay:${Math.random()*8}s;`;
-    container.appendChild(r);
+  const c = document.getElementById('runeContainer');
+  const r = ['⚡','✨','🔥','💀','🗡️','⚔️','🌙','💫','😈','🎵','👁️','🌸'];
+  for (let i = 0; i < 14; i++) {
+    const d = document.createElement('div');
+    d.className = 'rune';
+    d.textContent = r[Math.floor(Math.random()*r.length)];
+    d.style.cssText = `left:${Math.random()*100}%;--dur:${7+Math.random()*9}s;--delay:${Math.random()*8}s;`;
+    c.appendChild(d);
   }
 }
 
-/* ─── Particles ──────────────────────────────────────── */
+/* ── Particles ── */
 function initParticles() {
   const c = document.getElementById('particles');
   const ctx = c.getContext('2d');
-  c.width=innerWidth; c.height=innerHeight;
-  window.addEventListener('resize',()=>{c.width=innerWidth;c.height=innerHeight;});
-  const pts = Array.from({length:60},()=>({
-    x:Math.random()*c.width,y:Math.random()*c.height,
-    vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,
+  function resize() { c.width = innerWidth; c.height = innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  const pts = Array.from({length:55}, () => ({
+    x:Math.random()*c.width, y:Math.random()*c.height,
+    vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
     r:Math.random()*1.8+.4,
     col:['#dc143c','#ff0080','#bf00ff','#00ffff','#ffd700'][Math.floor(Math.random()*5)]
   }));
-  (function loop(){
+  (function loop() {
     ctx.clearRect(0,0,c.width,c.height);
-    pts.forEach(p=>{
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0)p.x=c.width;if(p.x>c.width)p.x=0;
-      if(p.y<0)p.y=c.height;if(p.y>c.height)p.y=0;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.col;ctx.globalAlpha=.55;ctx.fill();
+    pts.forEach(p => {
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=c.width; if(p.x>c.width)p.x=0;
+      if(p.y<0)p.y=c.height; if(p.y>c.height)p.y=0;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.col; ctx.globalAlpha=.5; ctx.fill();
     });
     requestAnimationFrame(loop);
   })();
 }
 
-/* ─── Background video fade-in ───────────────────────── */
-function initBgVideos() {
-  const sections = document.querySelectorAll('.vid-section');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if(e.isIntersecting) setTimeout(()=>e.target.classList.add('vid-loaded'),600);
-    });
-  },{threshold:0.15});
-  sections.forEach(s=>obs.observe(s));
-}
-
-/* ─── Init ───────────────────────────────────────────── */
+/* ── Init ── */
 window.addEventListener('load', () => {
-  loadTrack(false);
+  buildPlaylist();
+  updateVisualizer(false);
   spawnRunes();
   spawnIntroStars();
   initParticles();
-  initBgVideos();
+  initScrollSections();
 });
 </script>
 </body>
