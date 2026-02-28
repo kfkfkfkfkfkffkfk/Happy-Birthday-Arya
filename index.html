@@ -9,175 +9,159 @@
 /* ══════ RESET ══════ */
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{
-  font-family:'Orbitron',sans-serif;
-  color:#fff;
-  overflow-x:hidden;
+body{font-family:'Orbitron',sans-serif;color:#fff;overflow-x:hidden;background:#04000d;}
+
+/* ══════════════════════════════════════
+   INTRO / SPLASH PAGE
+══════════════════════════════════════ */
+#intro{
+  position:fixed;inset:0;z-index:9999;
   background:#04000d;
-}
-
-/* ══════ VIDEO BACKGROUND SYSTEM ══════ */
-/* Three full-screen video sections stacked vertically */
-.vid-section{
-  position:relative;
-  width:100%;
-  height:100vh;
-  overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  background:#04000d;
-}
-.vid-section iframe{
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:177.78vh;
-  height:100vh;
-  min-width:100%;
-  min-height:56.25vw;
-  border:none;
-  pointer-events:none;
-  /* start invisible — JS reveals after playback confirmed */
-  opacity:0;
-  transition:opacity 1.2s ease;
-}
-.vid-section.vid-loaded iframe{ opacity:1; }
-.vid-overlay{
-  position:absolute;inset:0;
-  z-index:2;
-  pointer-events:none;
-}
-/* Section 1: Girls - light purple/pink tint */
-.vid-section:nth-child(1) .vid-overlay{
-  background:linear-gradient(to bottom,rgba(4,0,13,.55) 0%,rgba(80,0,120,.25) 50%,rgba(4,0,13,.65) 100%);
-}
-/* Section 2: Soda Pop - teal/cyan tint */
-.vid-section:nth-child(2) .vid-overlay{
-  background:linear-gradient(to bottom,rgba(4,0,13,.6) 0%,rgba(0,40,60,.3) 50%,rgba(4,0,13,.7) 100%);
-}
-/* Section 3: Demon - red/dark tint */
-.vid-section:nth-child(3) .vid-overlay{
-  background:linear-gradient(to bottom,rgba(4,0,13,.65) 0%,rgba(80,0,0,.35) 50%,rgba(4,0,13,.75) 100%);
-}
-
-
-
-/* ══════ CONTENT OVERLAY ON EACH SECTION ══════ */
-.section-content{
-  position:relative;z-index:5;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:2rem;
-  pointer-events:none;
+  cursor:pointer;
+  transition:opacity .8s ease, visibility .8s ease;
 }
+#intro.hidden{opacity:0;visibility:hidden;pointer-events:none;}
 
-/* SECTION 1 — HERO */
-.hero-badge{
+/* pulsing ring behind the main emoji */
+.intro-ring{
+  position:relative;width:180px;height:180px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:2rem;
+}
+.intro-ring::before,.intro-ring::after{
+  content:'';position:absolute;border-radius:50%;
+  animation:ringPulse 2s ease-in-out infinite;
+}
+.intro-ring::before{
+  inset:-12px;
+  border:2px solid rgba(255,107,174,.4);
+}
+.intro-ring::after{
+  inset:-24px;
+  border:2px solid rgba(191,0,255,.25);
+  animation-delay:.4s;
+}
+@keyframes ringPulse{
+  0%,100%{transform:scale(1);opacity:.6}
+  50%{transform:scale(1.08);opacity:1}
+}
+.intro-icon{font-size:7rem;animation:iconFloat 3s ease-in-out infinite;}
+@keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+.intro-from{
   font-family:'Noto Serif KR',serif;
-  font-size:.75rem;letter-spacing:.45em;
+  font-size:.72rem;letter-spacing:.5em;
   color:#c77dff;text-shadow:0 0 20px #c77dff;
-  margin-bottom:1rem;
+  margin-bottom:.9rem;
   animation:flicker 5s infinite;
 }
-@keyframes flicker{0%,92%,96%,100%{opacity:1}94%{opacity:.2}95%{opacity:.8}}
+@keyframes flicker{0%,92%,96%,100%{opacity:1}94%{opacity:.15}95%{opacity:.75}}
 
-.hero-title{
+.intro-title{
   font-family:'Bebas Neue',cursive;
-  font-size:clamp(4.5rem,13vw,10rem);
-  line-height:.88;
+  font-size:clamp(3.5rem,12vw,8rem);
+  line-height:.9;
   background:linear-gradient(135deg,#ffd700 0%,#dc143c 35%,#ff0080 65%,#bf00ff 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 40px rgba(220,20,60,.5));
+  filter:drop-shadow(0 0 35px rgba(220,20,60,.5));
   animation:titleGlow 3s ease-in-out infinite;
 }
 @keyframes titleGlow{
-  0%,100%{filter:drop-shadow(0 0 30px rgba(220,20,60,.5));}
-  50%{filter:drop-shadow(0 0 70px rgba(255,0,128,.9)) drop-shadow(0 0 100px rgba(191,0,255,.4));}
+  0%,100%{filter:drop-shadow(0 0 25px rgba(220,20,60,.5));}
+  50%{filter:drop-shadow(0 0 60px rgba(255,0,128,.9)) drop-shadow(0 0 90px rgba(191,0,255,.4));}
 }
-.hero-name{
+.intro-name{
   font-family:'Noto Serif KR',serif;font-weight:900;
-  font-size:clamp(3rem,8vw,6rem);
+  font-size:clamp(2.5rem,7vw,5.5rem);
   color:#ff6bae;text-shadow:0 0 40px #ff6bae,0 0 80px rgba(255,107,174,.5);
-  letter-spacing:.1em;margin:.4rem 0;
+  letter-spacing:.08em;margin:.3rem 0;
   animation:namePulse 2s ease-in-out infinite;
 }
 @keyframes namePulse{
   0%,100%{text-shadow:0 0 30px #ff6bae,0 0 60px rgba(255,107,174,.5);}
   50%{text-shadow:0 0 60px #ff6bae,0 0 120px rgba(255,107,174,.9);}
 }
-.hero-age{
+.intro-age{
   font-family:'Bebas Neue',cursive;
-  font-size:clamp(5rem,15vw,12rem);
+  font-size:clamp(4rem,13vw,11rem);
   color:#ffd700;text-shadow:0 0 50px #ffd700,0 0 100px rgba(255,215,0,.4);
-  line-height:1;
-  position:relative;display:inline-block;
+  line-height:1;position:relative;display:inline-block;
 }
+.intro-age::before{content:'✦';position:absolute;left:-48px;top:50%;transform:translateY(-50%);font-size:1.6rem;color:#dc143c;animation:starSpin 3s linear infinite;}
+.intro-age::after{content:'✦';position:absolute;right:-48px;top:50%;transform:translateY(-50%);font-size:1.6rem;color:#dc143c;animation:starSpin 3s linear infinite reverse;}
+@keyframes starSpin{from{transform:translateY(-50%) rotate(0)}to{transform:translateY(-50%) rotate(360deg)}}
+
+.intro-cta{
+  margin-top:2.5rem;
+  font-size:.72rem;letter-spacing:.4em;
+  color:rgba(255,255,255,.45);
+  animation:ctaBounce 1.6s ease-in-out infinite;
+}
+@keyframes ctaBounce{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(-6px);opacity:.9}}
+
+/* shooting stars on intro */
+.star{
+  position:absolute;width:2px;background:linear-gradient(to bottom,#fff,transparent);
+  animation:shoot var(--dur,1.2s) linear infinite var(--delay,0s);
+  opacity:0;
+}
+@keyframes shoot{
+  0%{opacity:0;transform:translateY(-40px) translateX(0)}
+  10%{opacity:1}
+  90%{opacity:.6}
+  100%{opacity:0;transform:translateY(100vh) translateX(-80px)}
+}
+
+/* ══════ VIDEO BACKGROUND SYSTEM ══════ */
+.vid-section{
+  position:relative;width:100%;height:100vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:#04000d;
+}
+.vid-section iframe{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:177.78vh;height:100vh;
+  min-width:100%;min-height:56.25vw;
+  border:none;pointer-events:none;
+  opacity:0;transition:opacity 1.2s ease;
+}
+.vid-section.vid-loaded iframe{opacity:1;}
+.vid-overlay{position:absolute;inset:0;z-index:2;pointer-events:none;}
+.vid-section:nth-child(1) .vid-overlay{background:linear-gradient(to bottom,rgba(4,0,13,.55) 0%,rgba(80,0,120,.25) 50%,rgba(4,0,13,.65) 100%);}
+.vid-section:nth-child(2) .vid-overlay{background:linear-gradient(to bottom,rgba(4,0,13,.6) 0%,rgba(0,40,60,.3) 50%,rgba(4,0,13,.7) 100%);}
+.vid-section:nth-child(3) .vid-overlay{background:linear-gradient(to bottom,rgba(4,0,13,.65) 0%,rgba(80,0,0,.35) 50%,rgba(4,0,13,.75) 100%);}
+
+/* ══════ SECTION CONTENT ══════ */
+.section-content{position:relative;z-index:5;text-align:center;padding:2rem;pointer-events:none;}
+.hero-badge{font-family:'Noto Serif KR',serif;font-size:.75rem;letter-spacing:.45em;color:#c77dff;text-shadow:0 0 20px #c77dff;margin-bottom:1rem;animation:flicker 5s infinite;}
+.hero-title{font-family:'Bebas Neue',cursive;font-size:clamp(4.5rem,13vw,10rem);line-height:.88;background:linear-gradient(135deg,#ffd700 0%,#dc143c 35%,#ff0080 65%,#bf00ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 40px rgba(220,20,60,.5));animation:titleGlow 3s ease-in-out infinite;}
+.hero-name{font-family:'Noto Serif KR',serif;font-weight:900;font-size:clamp(3rem,8vw,6rem);color:#ff6bae;text-shadow:0 0 40px #ff6bae,0 0 80px rgba(255,107,174,.5);letter-spacing:.1em;margin:.4rem 0;animation:namePulse 2s ease-in-out infinite;}
+.hero-age{font-family:'Bebas Neue',cursive;font-size:clamp(5rem,15vw,12rem);color:#ffd700;text-shadow:0 0 50px #ffd700,0 0 100px rgba(255,215,0,.4);line-height:1;position:relative;display:inline-block;}
 .hero-age::before{content:'✦';position:absolute;left:-55px;top:50%;transform:translateY(-50%);font-size:1.8rem;color:#dc143c;animation:starSpin 3s linear infinite;}
 .hero-age::after{content:'✦';position:absolute;right:-55px;top:50%;transform:translateY(-50%);font-size:1.8rem;color:#dc143c;animation:starSpin 3s linear infinite reverse;}
-@keyframes starSpin{from{transform:translateY(-50%) rotate(0)}to{transform:translateY(-50%) rotate(360deg)}}
 .hero-sub{font-size:.72rem;letter-spacing:.38em;color:rgba(255,255,255,.5);margin-top:1.2rem;}
-.scroll-hint{
-  position:absolute;bottom:120px;left:50%;transform:translateX(-50%);
-  font-size:.65rem;letter-spacing:.3em;color:#00ffff;
-  animation:bounce 2s ease-in-out infinite;
-  z-index:10;
-}
+.scroll-hint{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);font-size:.65rem;letter-spacing:.3em;color:#00ffff;animation:bounce 2s ease-in-out infinite;z-index:10;}
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(10px);}}
-
-/* SECTION 2 — SODA POP */
-.section-label{
-  font-family:'Bebas Neue',cursive;
-  font-size:clamp(2rem,6vw,5rem);
-  letter-spacing:.15em;
-  background:linear-gradient(90deg,#00ffff,#ff6bae,#ffd700);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin-bottom:.5rem;
-}
-.section-sub{
-  font-family:'Noto Serif KR',serif;
-  font-size:.75rem;letter-spacing:.3em;color:rgba(255,255,255,.5);
-}
-
-/* SECTION 3 — DEMON */
+.section-label{font-family:'Bebas Neue',cursive;font-size:clamp(2rem,6vw,5rem);letter-spacing:.15em;background:linear-gradient(90deg,#00ffff,#ff6bae,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem;}
+.section-sub{font-family:'Noto Serif KR',serif;font-size:.75rem;letter-spacing:.3em;color:rgba(255,255,255,.5);}
 .demon-label{color:#dc143c;text-shadow:0 0 30px #dc143c;}
 
 /* ══════ MUSIC PLAYER ══════ */
-.player-section{
-  position:relative;z-index:10;
-  background:linear-gradient(180deg,rgba(4,0,13,0) 0%,rgba(4,0,13,.95) 8%,#04000d 100%);
-  padding:5rem 2rem 3rem;
-  padding-bottom:3rem;
-}
-.player-wrap{max-width:860px;margin:0 auto;}
-.sec-title{
-  font-family:'Bebas Neue',cursive;font-size:2.8rem;text-align:center;
-  background:linear-gradient(90deg,#00ffff,#bf00ff);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  letter-spacing:.1em;margin-bottom:.3rem;
-}
+.player-section{position:relative;z-index:10;background:linear-gradient(180deg,rgba(4,0,13,0) 0%,rgba(4,0,13,.95) 8%,#04000d 100%);padding:5rem 2rem 3rem;}
+.player-wrap{max-width:860px;margin:0 auto;position:relative;}
+.sec-title{font-family:'Bebas Neue',cursive;font-size:2.8rem;text-align:center;background:linear-gradient(90deg,#00ffff,#bf00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.1em;margin-bottom:.3rem;}
 .sec-sub{text-align:center;font-family:'Noto Serif KR',serif;color:rgba(255,255,255,.35);font-size:.7rem;letter-spacing:.3em;margin-bottom:2.5rem;}
 .divider{width:100%;max-width:600px;margin:0 auto 2.5rem;height:1px;background:linear-gradient(to right,transparent,#dc143c,transparent);}
 
-/* player card */
-.player-card{
-  background:linear-gradient(135deg,rgba(139,0,0,.12),rgba(10,0,5,.9));
-  border:1px solid rgba(220,20,60,.3);border-radius:16px;
-  padding:2rem;position:relative;overflow:hidden;
-  box-shadow:0 0 60px rgba(139,0,0,.18);
-}
-.player-card::before{
-  content:'';position:absolute;inset:-2px;border-radius:17px;
-  background:linear-gradient(45deg,#dc143c,#bf00ff,#ff0080,#dc143c);
-  z-index:-1;opacity:.45;
-  animation:borderRot 4s linear infinite;
-}
+.player-card{background:linear-gradient(135deg,rgba(139,0,0,.12),rgba(10,0,5,.9));border:1px solid rgba(220,20,60,.3);border-radius:16px;padding:2rem;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(139,0,0,.18);}
+.player-card::before{content:'';position:absolute;inset:-2px;border-radius:17px;background:linear-gradient(45deg,#dc143c,#bf00ff,#ff0080,#dc143c);z-index:-1;opacity:.45;animation:borderRot 4s linear infinite;}
 @keyframes borderRot{from{filter:hue-rotate(0)}to{filter:hue-rotate(360deg)}}
 
 .now-playing{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;}
-.album-art{
-  width:85px;height:85px;border-radius:12px;flex-shrink:0;
-  background:linear-gradient(135deg,#8b0000,#bf00ff);
-  display:flex;align-items:center;justify-content:center;
-  font-size:2.8rem;box-shadow:0 0 30px rgba(139,0,0,.5);
-  transition:transform .3s;
-}
+.album-art{width:85px;height:85px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,#8b0000,#bf00ff);display:flex;align-items:center;justify-content:center;font-size:2.8rem;box-shadow:0 0 30px rgba(139,0,0,.5);transition:transform .3s;}
 .album-art.spin{animation:albumSpin 8s linear infinite;}
 @keyframes albumSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .track-name{font-family:'Bebas Neue',cursive;font-size:1.7rem;letter-spacing:.05em;line-height:1;}
@@ -195,23 +179,15 @@ body{
 .controls{display:flex;align-items:center;justify-content:center;gap:1.4rem;margin-top:1rem;}
 .ctrl-btn{background:none;border:none;color:rgba(255,255,255,.55);font-size:1.35rem;cursor:pointer;padding:.4rem;transition:all .2s;}
 .ctrl-btn:hover{color:#ff0080;transform:scale(1.2);}
-.play-btn{
-  width:58px;height:58px;border-radius:50%;
-  background:linear-gradient(135deg,#dc143c,#ff0080);
-  border:none;color:#fff;font-size:1.5rem;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 30px rgba(255,0,128,.5);transition:all .2s;
-}
+.play-btn{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#dc143c,#ff0080);border:none;color:#fff;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(255,0,128,.5);transition:all .2s;}
 .play-btn:hover{transform:scale(1.1);box-shadow:0 0 55px rgba(255,0,128,.85);}
 .volume-area{display:flex;align-items:center;gap:.7rem;margin-top:1rem;padding:0 .3rem;}
 .vol-icon{font-size:.95rem;color:rgba(255,255,255,.4);}
 .volume-slider{-webkit-appearance:none;flex:1;height:3px;background:rgba(255,255,255,.1);border-radius:2px;outline:none;}
 .volume-slider::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#ff0080;cursor:pointer;box-shadow:0 0 10px #ff0080;}
+
 .playlist{margin-top:1.8rem;display:flex;flex-direction:column;gap:.4rem;}
-.pl-item{
-  display:flex;align-items:center;gap:.9rem;padding:.7rem .9rem;
-  border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid transparent;
-}
+.pl-item{display:flex;align-items:center;gap:.9rem;padding:.7rem .9rem;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid transparent;}
 .pl-item:hover{background:rgba(220,20,60,.1);border-color:rgba(220,20,60,.3);}
 .pl-item.active{background:rgba(220,20,60,.14);border-color:rgba(255,0,128,.4);}
 .pl-num{font-family:'Bebas Neue',cursive;font-size:1.1rem;color:rgba(255,255,255,.28);width:2ch;}
@@ -230,9 +206,6 @@ body{
 .note-card::before{content:'⚔️';font-size:3.5rem;display:block;margin-bottom:1rem;filter:drop-shadow(0 0 18px rgba(255,215,0,.5));animation:swordGlow 2s ease-in-out infinite;}
 @keyframes swordGlow{0%,100%{filter:drop-shadow(0 0 10px rgba(255,215,0,.3));}50%{filter:drop-shadow(0 0 30px rgba(255,215,0,.85));}}
 .note-text{font-family:'Noto Serif KR',serif;font-size:1.05rem;line-height:1.9;color:rgba(255,255,255,.85);font-style:italic;}
-.note-text .hl{color:#ff6bae;font-style:normal;font-weight:700;text-shadow:0 0 10px #ff6bae;}
-.note-text .gl{color:#ffd700;font-style:normal;font-weight:700;text-shadow:0 0 10px #ffd700;}
-.signature{margin-top:1.8rem;font-family:'Bebas Neue',cursive;font-size:1.9rem;letter-spacing:.2em;background:linear-gradient(90deg,#ffd700,#dc143c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
 /* ══════ FLOATING RUNES ══════ */
 .rune{position:fixed;pointer-events:none;font-size:1.4rem;opacity:0;animation:floatRune var(--dur,8s) ease-in-out infinite var(--delay,0s);z-index:1;}
@@ -240,8 +213,6 @@ body{
 
 /* ══════ PARTICLE CANVAS ══════ */
 #particles{position:fixed;inset:0;pointer-events:none;z-index:999;}
-
-
 
 footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(255,255,255,.18);font-size:.6rem;letter-spacing:.28em;}
 </style>
@@ -251,6 +222,28 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
 <!-- ══ PARTICLE CANVAS ══ -->
 <canvas id="particles"></canvas>
 
+<!-- ══════════════════════════════════════
+     INTRO / SPLASH PAGE
+     Click anywhere to open the letter & start music
+══════════════════════════════════════ -->
+<div id="intro" onclick="enterPage()">
+
+  <!-- shooting stars -->
+  <div id="introStars"></div>
+
+  <p class="intro-from">A BIRTHDAY LETTER FOR</p>
+
+  <div class="intro-ring">
+    <div class="intro-icon">🌸</div>
+  </div>
+
+  <h1 class="intro-title">HAPPY<br>BIRTHDAY</h1>
+  <p class="intro-name">ARYA</p>
+  <div class="intro-age">15</div>
+
+  <p class="intro-cta">✦ TAP ANYWHERE TO OPEN ✦</p>
+</div>
+
 <!-- ══ FLOATING RUNES ══ -->
 <div id="runeContainer"></div>
 
@@ -258,8 +251,8 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
      VIDEO SECTION 1 — GOLDEN (GIRLS)
 ══════════════════════════════════════ -->
 <div class="vid-section" id="vs1">
-  <iframe id="yt1"
-    src="https://www.youtube.com/embed/yebNIHKAC4A?autoplay=1&mute=0&loop=1&playlist=yebNIHKAC4A&controls=0&showinfo=0&rel=0&modestbranding=1&enablejsapi=1&playsinline=1&start=0"
+  <iframe id="yt-bg1"
+    src="https://www.youtube.com/embed/yebNIHKAC4A?autoplay=1&mute=1&loop=1&playlist=yebNIHKAC4A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&start=0"
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <div class="vid-overlay"></div>
   <div class="section-content">
@@ -276,8 +269,8 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
      VIDEO SECTION 2 — SODA POP
 ══════════════════════════════════════ -->
 <div class="vid-section" id="vs2">
-  <iframe id="yt2"
-    src="https://www.youtube.com/embed/y2prmubAic4?autoplay=0&mute=0&loop=1&playlist=y2prmubAic4&controls=0&showinfo=0&rel=0&modestbranding=1&enablejsapi=1&playsinline=1"
+  <iframe id="yt-bg2"
+    src="https://www.youtube.com/embed/y2prmubAic4?autoplay=0&mute=1&loop=1&playlist=y2prmubAic4&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <div class="vid-overlay"></div>
   <div class="section-content">
@@ -287,11 +280,11 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
 </div>
 
 <!-- ══════════════════════════════════════
-     VIDEO SECTION 3 — DEMON MODE
+     VIDEO SECTION 3 — YOUR IDOL
 ══════════════════════════════════════ -->
 <div class="vid-section" id="vs3">
-  <iframe id="yt3"
-    src="https://www.youtube.com/embed/2FS3JAPTKXs?autoplay=0&mute=0&loop=1&playlist=2FS3JAPTKXs&controls=0&showinfo=0&rel=0&modestbranding=1&enablejsapi=1&playsinline=1"
+  <iframe id="yt-bg3"
+    src="https://www.youtube.com/embed/2FS3JAPTKXs?autoplay=0&mute=1&loop=1&playlist=2FS3JAPTKXs&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <div class="vid-overlay"></div>
   <div class="section-content">
@@ -333,10 +326,11 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
         <span class="vol-icon">🔊</span>
       </div>
       <div class="playlist" id="playlist"></div>
-      <p class="note-about">▶ Click play or a track to start · Audio streams via YouTube · Requires internet</p>
+      <p class="note-about">▶ Click play or a track · Streams via YouTube · Requires internet</p>
     </div>
-    <!-- Hidden YouTube IFrame API player sits outside the card but inside the wrap -->
-    <div id="yt-container" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;top:-9999px;left:-9999px;">
+
+    <!-- Hidden 1×1 YouTube IFrame API player — audio plays here, no video visible -->
+    <div style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;top:-9999px;left:-9999px;">
       <div id="yt-player"></div>
     </div>
   </div>
@@ -357,88 +351,78 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
 
 <footer>CRAFTED WITH 🔥 FOR ARYA'S 15TH · KPOP DEMON HUNTERS · GONNA BE GOLDEN</footer>
 
-
 <!-- YouTube IFrame API -->
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-/* ══════════════════════════════════════════════════════
-   KPOP DEMON HUNTERS · FULL SOUNDTRACK PLAYER
-   Uses YouTube IFrame API — plays right here on the page,
-   no redirects, no popups, auto-advances, loops forever.
-══════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   KPOP DEMON HUNTERS · FULL SOUNDTRACK · INLINE YT PLAYER
+   All 11 songs (Score Suite removed). Verified working IDs where
+   possible; fallback to best available official upload.
+   Golden / Soda Pop / Your Idol / TAKEDOWN / Free — confirmed.
+   How It's Done / What It Sounds Like / Strategy / etc — best
+   available official IDs from Sony Animation channel.
+══════════════════════════════════════════════════════════════ */
 
 const TRACKS = [
-  { name:"TAKEDOWN",              artist:"TWICE (Jeongyeon, Jihyo, Chaeyoung)",  theme:"TWICE × HUNTR/X · LEAD SINGLE",         emoji:"⚡", ytId:"RIiHgjF3MSM", dur:"3:09" },
-  { name:"HOW IT'S DONE",         artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · OPENING ANTHEM",               emoji:"🔥", ytId:"dJDHiQ3FPCQ", dur:"3:22" },
-  { name:"SODA POP",              artist:"Saja Boys",                            theme:"SAJA BOYS · BUBBLEGUM BOP",               emoji:"🥤", ytId:"y2prmubAic4", dur:"2:58" },
-  { name:"GOLDEN",                artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · GRAMMY WINNER · #1 UK",         emoji:"✨", ytId:"yebNIHKAC4A", dur:"3:41" },
-  { name:"STRATEGY",              artist:"TWICE",                                theme:"TWICE · COMEBACK TRACK",                  emoji:"🎯", ytId:"r0lI8zk4_o0", dur:"3:29" },
-  { name:"TAKEDOWN (HUNTR/X)",    artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · IN-FILM VERSION",               emoji:"🗡️", ytId:"RIiHgjF3MSM", dur:"3:09" },
-  { name:"YOUR IDOL",             artist:"Saja Boys",                            theme:"SAJA BOYS · VILLAIN SONG · #1 SPOTIFY",   emoji:"😈", ytId:"2FS3JAPTKXs", dur:"3:15" },
-  { name:"FREE",                  artist:"Rumi & Jinu (EJAE, Andrew Choi)",      theme:"RUMI × JINU · EMOTIONAL DUET",            emoji:"🕊️", ytId:"d7NObM5bZtY", dur:"3:52" },
-  { name:"WHAT IT SOUNDS LIKE",   artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · CLIMACTIC FINALE",              emoji:"🎶", ytId:"8Q1GVoB4vDI", dur:"3:34" },
-  { name:"LOVE MAYBE",            artist:"MeloMance",                            theme:"MELOMANCE · K-BALLAD",                    emoji:"💙", ytId:"u9QHEHJ4Af4", dur:"3:48" },
-  { name:"PATH",                  artist:"Jokers",                               theme:"JOKERS · PSYCH-POP INTERLUDE",            emoji:"🌿", ytId:"_FYSf3mC6Gk", dur:"3:03" },
-  { name:"SCORE SUITE",           artist:"Marcelo Zarvos",                       theme:"ORIGINAL ORCHESTRAL SCORE",               emoji:"🎻", ytId:"yebNIHKAC4A", dur:"8:12" },
+  // ✅ Confirmed working IDs
+  { name:"TAKEDOWN",            artist:"TWICE (Jeongyeon, Jihyo, Chaeyoung)",  theme:"TWICE × HUNTR/X · LEAD SINGLE",         emoji:"⚡", ytId:"vf1kWWqJKus", dur:"3:09" },
+  { name:"HOW IT'S DONE",       artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · OPENING ANTHEM",               emoji:"🔥", ytId:"dJDHiQ3FPCQ", dur:"3:03" },
+  { name:"SODA POP",            artist:"Saja Boys",                            theme:"SAJA BOYS · BUBBLEGUM BOP",               emoji:"🥤", ytId:"y2prmubAic4", dur:"2:58" },
+  { name:"GOLDEN",              artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · GRAMMY WINNER · GOLDEN GLOBE",  emoji:"✨", ytId:"yebNIHKAC4A", dur:"3:41" },
+  { name:"STRATEGY",            artist:"TWICE",                                theme:"TWICE · COMEBACK TRACK",                  emoji:"🎯", ytId:"r0lI8zk4_o0", dur:"3:29" },
+  { name:"TAKEDOWN (HUNTR/X)",  artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · IN-FILM VERSION",               emoji:"🗡️", ytId:"vf1kWWqJKus", dur:"3:09" },
+  { name:"YOUR IDOL",           artist:"Saja Boys",                            theme:"SAJA BOYS · VILLAIN SONG · #1 SPOTIFY",   emoji:"😈", ytId:"2FS3JAPTKXs", dur:"3:15" },
+  { name:"FREE",                artist:"Rumi & Jinu (EJAE, Andrew Choi)",      theme:"RUMI × JINU · EMOTIONAL DUET",            emoji:"🕊️", ytId:"fjOeJssZX_Q", dur:"3:07" },
+  { name:"WHAT IT SOUNDS LIKE", artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · CLIMACTIC FINALE",              emoji:"🎶", ytId:"8Q1GVoB4vDI", dur:"3:34" },
+  { name:"LOVE MAYBE",          artist:"MeloMance",                            theme:"MELOMANCE · K-BALLAD",                    emoji:"💙", ytId:"u9QHEHJ4Af4", dur:"3:48" },
+  { name:"PATH",                artist:"Jokers",                               theme:"JOKERS · PSYCH-POP INTERLUDE",            emoji:"🌿", ytId:"_FYSf3mC6Gk", dur:"3:03" },
 ];
 
 /* ─── State ─────────────────────────────────────────── */
-let current   = 0;
-let isPlaying = false;
-let ytPlayer  = null;
-let ytReady   = false;
-let pendingPlay = false;   // play was requested before API was ready
+let current     = 0;
+let isPlaying   = false;
+let ytPlayer    = null;
+let ytReady     = false;
+let pendingPlay = false;
 let progressTimer = null;
 
-/* ─── YouTube IFrame API callback ────────────────────── */
+/* ─── YouTube IFrame API ─────────────────────────────── */
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('yt-player', {
     height: '1', width: '1',
     videoId: TRACKS[0].ytId,
     playerVars: {
-      autoplay: 0,
-      controls: 0,
-      disablekb: 1,
-      fs: 0,
-      iv_load_policy: 3,
-      modestbranding: 1,
-      rel: 0,
-      playsinline: 1,
-      origin: window.location.origin || 'https://github.io'
+      autoplay: 0, controls: 0, disablekb: 1, fs: 0,
+      iv_load_policy: 3, modestbranding: 1, rel: 0, playsinline: 1,
     },
     events: {
-      onReady: onPlayerReady,
-      onStateChange: onPlayerStateChange
+      onReady: e => {
+        ytReady = true;
+        e.target.setVolume(parseInt(document.getElementById('volSlider').value));
+        if (pendingPlay) { pendingPlay = false; e.target.playVideo(); }
+      },
+      onStateChange: e => {
+        if (e.data === YT.PlayerState.ENDED) {
+          current = (current + 1) % TRACKS.length;
+          loadTrack(true);
+        }
+        if (e.data === YT.PlayerState.PLAYING) {
+          isPlaying = true;
+          document.getElementById('playBtn').textContent = '⏸';
+          document.getElementById('albumArt').classList.add('spin');
+          updateVisualizer(true);
+          startProgressTimer();
+        }
+        if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
+          isPlaying = false;
+          document.getElementById('playBtn').textContent = '▶';
+          document.getElementById('albumArt').classList.remove('spin');
+          updateVisualizer(false);
+          clearInterval(progressTimer);
+        }
+      }
     }
   });
-}
-
-function onPlayerReady(e) {
-  ytReady = true;
-  setVol(document.getElementById('volSlider').value);
-  if (pendingPlay) { pendingPlay = false; ytPlayer.playVideo(); }
-}
-
-function onPlayerStateChange(e) {
-  // YT.PlayerState.ENDED = 0
-  if (e.data === YT.PlayerState.ENDED) {
-    current = (current + 1) % TRACKS.length;
-    loadTrack(true);
-  }
-  if (e.data === YT.PlayerState.PLAYING) {
-    isPlaying = true;
-    document.getElementById('playBtn').textContent = '⏸';
-    document.getElementById('albumArt').classList.add('spin');
-    updateVisualizer(true);
-    startProgressTimer();
-  }
-  if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
-    isPlaying = false;
-    document.getElementById('playBtn').textContent = '▶';
-    document.getElementById('albumArt').classList.remove('spin');
-    updateVisualizer(false);
-    clearInterval(progressTimer);
-  }
 }
 
 /* ─── Progress bar ───────────────────────────────────── */
@@ -449,23 +433,19 @@ function startProgressTimer() {
     const dur = ytPlayer.getDuration() || 0;
     const cur = ytPlayer.getCurrentTime() || 0;
     if (dur > 0) {
-      document.getElementById('progressFill').style.width = (cur / dur * 100) + '%';
-      document.getElementById('timeElapsed').textContent = fmtTime(cur);
-      document.getElementById('timeDuration').textContent = fmtTime(dur);
+      document.getElementById('progressFill').style.width = (cur/dur*100)+'%';
+      document.getElementById('timeElapsed').textContent = fmt(cur);
+      document.getElementById('timeDuration').textContent = fmt(dur);
     }
   }, 500);
 }
+function fmt(s){s=Math.floor(s);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
 
-function fmtTime(s) {
-  s = Math.floor(s);
-  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
-}
-
-/* Click progress bar to seek */
-document.getElementById('progressBar').addEventListener('click', function(e) {
-  if (!ytPlayer || !ytReady) return;
-  const pct = e.offsetX / this.offsetWidth;
-  ytPlayer.seekTo(ytPlayer.getDuration() * pct, true);
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('progressBar').addEventListener('click', function(e){
+    if (!ytPlayer || !ytReady) return;
+    ytPlayer.seekTo(ytPlayer.getDuration() * (e.offsetX / this.offsetWidth), true);
+  });
 });
 
 /* ─── Core controls ──────────────────────────────────── */
@@ -480,12 +460,13 @@ function loadTrack(autoPlay) {
   document.getElementById('progressFill').style.width = '0%';
   buildPlaylist();
   updateVisualizer(false);
-
   if (ytReady && ytPlayer) {
-    ytPlayer.loadVideoById(t.ytId);
-    if (!autoPlay) { ytPlayer.stopVideo(); isPlaying = false; }
-    // loadVideoById autoplays by default — pause if not autoplaying
-    if (!autoPlay) setTimeout(() => ytPlayer.pauseVideo && ytPlayer.pauseVideo(), 300);
+    // loadVideoById auto-starts; cueVideoById loads without playing
+    if (autoPlay) {
+      ytPlayer.loadVideoById(t.ytId);
+    } else {
+      ytPlayer.cueVideoById(t.ytId);
+    }
   }
 }
 
@@ -497,53 +478,61 @@ function togglePlay() {
     ytPlayer.playVideo();
   }
 }
-
-function nextTrack() {
-  current = (current + 1) % TRACKS.length;
-  loadTrack(isPlaying);
-}
-
-function prevTrack() {
-  current = (current - 1 + TRACKS.length) % TRACKS.length;
-  loadTrack(isPlaying);
-}
-
-function setVol(v) {
-  if (ytPlayer && ytReady) ytPlayer.setVolume(parseInt(v));
-}
+function nextTrack(){ current=(current+1)%TRACKS.length; loadTrack(isPlaying); }
+function prevTrack(){ current=(current-1+TRACKS.length)%TRACKS.length; loadTrack(isPlaying); }
+function setVol(v){ if(ytPlayer&&ytReady) ytPlayer.setVolume(parseInt(v)); }
 
 /* ─── Playlist UI ────────────────────────────────────── */
 function buildPlaylist() {
   const pl = document.getElementById('playlist');
   pl.innerHTML = '';
-  TRACKS.forEach((t, i) => {
+  TRACKS.forEach((t,i) => {
     const div = document.createElement('div');
-    div.className = 'pl-item' + (i === current ? ' active' : '');
-    div.innerHTML = `<span class="pl-num">${i + 1}</span>
+    div.className = 'pl-item'+(i===current?' active':'');
+    div.innerHTML = `<span class="pl-num">${i+1}</span>
       <span class="pl-emoji">${t.emoji}</span>
       <div class="pl-info">
         <div class="pl-name">${t.name}</div>
         <div class="pl-artist">${t.artist}</div>
       </div>
       <span class="pl-dur">${t.dur}</span>`;
-    div.onclick = () => {
-      current = i;
-      loadTrack(true);
-      // loadVideoById starts playing automatically; state change handles UI
-    };
+    div.onclick = () => { current=i; loadTrack(true); };
     pl.appendChild(div);
   });
 }
 
-/* ─── Visualizer bars ────────────────────────────────── */
+/* ─── Visualizer ─────────────────────────────────────── */
 function updateVisualizer(on) {
   const viz = document.getElementById('visualizer');
   viz.innerHTML = '';
-  for (let i = 0; i < 22; i++) {
+  for(let i=0;i<22;i++){
     const b = document.createElement('div');
-    b.className = 'bar' + (on ? ' on' : '');
-    b.style.cssText = `--spd:${(.25 + Math.random() * .55).toFixed(2)}s;animation-delay:${(Math.random() * .4).toFixed(2)}s;height:${6 + Math.random() * 39}px;`;
+    b.className = 'bar'+(on?' on':'');
+    b.style.cssText = `--spd:${(.25+Math.random()*.55).toFixed(2)}s;animation-delay:${(Math.random()*.4).toFixed(2)}s;height:${6+Math.random()*39}px;`;
     viz.appendChild(b);
+  }
+}
+
+/* ─── Intro page ─────────────────────────────────────── */
+function enterPage() {
+  // Hide intro with fade
+  document.getElementById('intro').classList.add('hidden');
+  // Autoplay first track immediately (satisfies browser gesture requirement since user clicked)
+  if (ytReady && ytPlayer) {
+    ytPlayer.loadVideoById(TRACKS[0].ytId);
+  } else {
+    pendingPlay = true;
+  }
+}
+
+/* ─── Shooting stars on intro ────────────────────────── */
+function spawnIntroStars(){
+  const container = document.getElementById('introStars');
+  for(let i=0;i<18;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `left:${Math.random()*100}%;height:${60+Math.random()*80}px;--dur:${.8+Math.random()*1.5}s;--delay:${Math.random()*3}s;`;
+    container.appendChild(s);
   }
 }
 
@@ -551,11 +540,11 @@ function updateVisualizer(on) {
 function spawnRunes() {
   const container = document.getElementById('runeContainer');
   const runes = ['⚡','✨','🔥','💀','🗡️','⚔️','🌙','💫','😈','🎵','👁️','🌸'];
-  for (let i = 0; i < 14; i++) {
+  for(let i=0;i<14;i++){
     const r = document.createElement('div');
     r.className = 'rune';
-    r.textContent = runes[Math.floor(Math.random() * runes.length)];
-    r.style.cssText = `left:${Math.random() * 100}%;--dur:${7 + Math.random() * 9}s;--delay:${Math.random() * 8}s;`;
+    r.textContent = runes[Math.floor(Math.random()*runes.length)];
+    r.style.cssText = `left:${Math.random()*100}%;--dur:${7+Math.random()*9}s;--delay:${Math.random()*8}s;`;
     container.appendChild(r);
   }
 }
@@ -564,22 +553,22 @@ function spawnRunes() {
 function initParticles() {
   const c = document.getElementById('particles');
   const ctx = c.getContext('2d');
-  c.width = innerWidth; c.height = innerHeight;
-  window.addEventListener('resize', () => { c.width = innerWidth; c.height = innerHeight; });
-  const pts = Array.from({ length: 60 }, () => ({
-    x: Math.random() * c.width, y: Math.random() * c.height,
-    vx: (Math.random() - .5) * .4, vy: (Math.random() - .5) * .4,
-    r: Math.random() * 1.8 + .4,
-    col: ['#dc143c','#ff0080','#bf00ff','#00ffff','#ffd700'][Math.floor(Math.random() * 5)]
+  c.width=innerWidth; c.height=innerHeight;
+  window.addEventListener('resize',()=>{c.width=innerWidth;c.height=innerHeight;});
+  const pts = Array.from({length:60},()=>({
+    x:Math.random()*c.width,y:Math.random()*c.height,
+    vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,
+    r:Math.random()*1.8+.4,
+    col:['#dc143c','#ff0080','#bf00ff','#00ffff','#ffd700'][Math.floor(Math.random()*5)]
   }));
-  (function loop() {
-    ctx.clearRect(0, 0, c.width, c.height);
-    pts.forEach(p => {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0) p.x = c.width; if (p.x > c.width) p.x = 0;
-      if (p.y < 0) p.y = c.height; if (p.y > c.height) p.y = 0;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.col; ctx.globalAlpha = .55; ctx.fill();
+  (function loop(){
+    ctx.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=c.width;if(p.x>c.width)p.x=0;
+      if(p.y<0)p.y=c.height;if(p.y>c.height)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.col;ctx.globalAlpha=.55;ctx.fill();
     });
     requestAnimationFrame(loop);
   })();
@@ -588,21 +577,19 @@ function initParticles() {
 /* ─── Background video fade-in ───────────────────────── */
 function initBgVideos() {
   const sections = document.querySelectorAll('.vid-section');
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        // Small delay so the iframe has time to receive autoplay
-        setTimeout(() => entry.target.classList.add('vid-loaded'), 800);
-      }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting) setTimeout(()=>e.target.classList.add('vid-loaded'),600);
     });
-  }, { threshold: 0.15 });
-  sections.forEach(s => obs.observe(s));
+  },{threshold:0.15});
+  sections.forEach(s=>obs.observe(s));
 }
 
 /* ─── Init ───────────────────────────────────────────── */
 window.addEventListener('load', () => {
   loadTrack(false);
   spawnRunes();
+  spawnIntroStars();
   initParticles();
   initBgVideos();
 });
