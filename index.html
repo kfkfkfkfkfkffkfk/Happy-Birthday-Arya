@@ -350,6 +350,139 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
 <footer>CRAFTED WITH 🔥 FOR ARYA'S 15TH · KPOP DEMON HUNTERS · GONNA BE GOLDEN</footer>
 
 
+<script>
+/* ══════════════════════════════════════
+   FULL KPOP DEMON HUNTERS PLAYLIST
+══════════════════════════════════════ */
+const TRACKS = [
+  { name:"TAKEDOWN", artist:"TWICE (Jeongyeon, Jihyo, Chaeyoung)", theme:"TWICE × HUNTR/X · LEAD SINGLE", emoji:"⚡", ytId:"RIiHgjF3MSM", dur:"3:09" },
+  { name:"HOW IT'S DONE", artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · OPENING ANTHEM", emoji:"🔥", ytId:"dJDHiQ3FPCQ", dur:"3:22" },
+  { name:"SODA POP", artist:"Saja Boys", theme:"SAJA BOYS · BUBBLEGUM BOP", emoji:"🥤", ytId:"y2prmubAic4", dur:"2:58" },
+  { name:"GOLDEN", artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · GRAMMY WINNER · #1 UK", emoji:"✨", ytId:"yebNIHKAC4A", dur:"3:41" },
+  { name:"STRATEGY", artist:"TWICE", theme:"TWICE · COMEBACK TRACK", emoji:"🎯", ytId:"r0lI8zk4_o0", dur:"3:29" },
+  { name:"TAKEDOWN (HUNTR/X ver.)", artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · IN-FILM VERSION", emoji:"🗡️", ytId:"RIiHgjF3MSM", dur:"3:09" },
+  { name:"YOUR IDOL", artist:"Saja Boys", theme:"SAJA BOYS · VILLAIN SONG · #1 SPOTIFY", emoji:"😈", ytId:"2FS3JAPTKXs", dur:"3:15" },
+  { name:"FREE", artist:"Rumi & Jinu (EJAE, Andrew Choi)", theme:"RUMI × JINU · EMOTIONAL DUET", emoji:"🕊️", ytId:"d7NObM5bZtY", dur:"3:52" },
+  { name:"WHAT IT SOUNDS LIKE", artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · CLIMACTIC FINALE", emoji:"🎶", ytId:"8Q1GVoB4vDI", dur:"3:34" },
+  { name:"LOVE MAYBE", artist:"MeloMance", theme:"MELOMANCE · K-BALLAD", emoji:"💙", ytId:"u9QHEHJ4Af4", dur:"3:48" },
+  { name:"PATH", artist:"Jokers", theme:"JOKERS · PSYCH-POP INTERLUDE", emoji:"🌿", ytId:"_FYSf3mC6Gk", dur:"3:03" },
+  { name:"SCORE SUITE", artist:"Marcelo Zarvos", theme:"ORIGINAL ORCHESTRAL SCORE", emoji:"🎻", ytId:"yebNIHKAC4A", dur:"8:12" },
+];
+
+let current = 0, isPlaying = false;
+
+/* ── Build playlist UI ── */
+function buildPlaylist(){
+  const pl = document.getElementById('playlist');
+  pl.innerHTML = '';
+  TRACKS.forEach((t,i)=>{
+    const div = document.createElement('div');
+    div.className = 'pl-item' + (i===current?' active':'');
+    div.innerHTML = `<span class="pl-num">${i+1}</span>
+      <span class="pl-emoji">${t.emoji}</span>
+      <div class="pl-info">
+        <div class="pl-name">${t.name}</div>
+        <div class="pl-artist">${t.artist}</div>
+      </div>
+      <span class="pl-dur">${t.dur}</span>`;
+    div.onclick = ()=>{ current=i; loadTrack(); startPlay(); };
+    pl.appendChild(div);
+  });
+}
+
+function loadTrack(){
+  const t = TRACKS[current];
+  document.getElementById('trackName').textContent = t.name;
+  document.getElementById('trackArtist').textContent = t.artist;
+  document.getElementById('trackTheme').textContent = t.theme;
+  document.getElementById('albumArt').textContent = t.emoji;
+  document.getElementById('timeDuration').textContent = t.dur;
+  document.getElementById('timeElapsed').textContent = '0:00';
+  document.getElementById('progressFill').style.width = '0%';
+  buildPlaylist();
+  updateVisualizer(false);
+}
+
+function togglePlay(){
+  if(isPlaying) pausePlay(); else startPlay();
+}
+
+function startPlay(){
+  isPlaying = true;
+  document.getElementById('playBtn').textContent = '⏸';
+  document.getElementById('albumArt').classList.add('spin');
+  updateVisualizer(true);
+  const t = TRACKS[current];
+  window.open(`https://www.youtube.com/watch?v=${t.ytId}`, '_blank');
+}
+
+function pausePlay(){
+  isPlaying = false;
+  document.getElementById('playBtn').textContent = '▶';
+  document.getElementById('albumArt').classList.remove('spin');
+  updateVisualizer(false);
+}
+
+function nextTrack(){ current = (current+1)%TRACKS.length; loadTrack(); if(isPlaying) startPlay(); }
+function prevTrack(){ current = (current-1+TRACKS.length)%TRACKS.length; loadTrack(); if(isPlaying) startPlay(); }
+function setVol(v){}
+
+/* ── Visualizer bars ── */
+function updateVisualizer(on){
+  const viz = document.getElementById('visualizer');
+  viz.innerHTML = '';
+  for(let i=0;i<22;i++){
+    const b = document.createElement('div');
+    b.className = 'bar' + (on?' on':'');
+    b.style.cssText=`--spd:${(.25+Math.random()*.55).toFixed(2)}s;animation-delay:${(Math.random()*.4).toFixed(2)}s;height:${6+Math.random()*39}px;`;
+    viz.appendChild(b);
+  }
+}
+
+/* ── Floating runes ── */
+function spawnRunes(){
+  const container = document.getElementById('runeContainer');
+  const runes = ['⚡','✨','🔥','💀','🗡️','⚔️','🌙','💫','😈','🎵','👁️','🌸'];
+  for(let i=0;i<14;i++){
+    const r = document.createElement('div');
+    r.className = 'rune';
+    r.textContent = runes[Math.floor(Math.random()*runes.length)];
+    r.style.cssText = `left:${Math.random()*100}%;--dur:${7+Math.random()*9}s;--delay:${Math.random()*8}s;`;
+    container.appendChild(r);
+  }
+}
+
+/* ── Particles ── */
+function initParticles(){
+  const c = document.getElementById('particles');
+  const ctx = c.getContext('2d');
+  c.width = innerWidth; c.height = innerHeight;
+  window.addEventListener('resize',()=>{ c.width=innerWidth; c.height=innerHeight; });
+  const pts = Array.from({length:60},()=>({
+    x:Math.random()*c.width, y:Math.random()*c.height,
+    vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
+    r:Math.random()*1.8+.4,
+    col:['#dc143c','#ff0080','#bf00ff','#00ffff','#ffd700'][Math.floor(Math.random()*5)]
+  }));
+  (function loop(){
+    ctx.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=c.width; if(p.x>c.width)p.x=0;
+      if(p.y<0)p.y=c.height; if(p.y>c.height)p.y=0;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.col; ctx.globalAlpha=.55; ctx.fill();
+    });
+    requestAnimationFrame(loop);
+  })();
+}
+
+/* ── Init ── */
+window.addEventListener('load',()=>{
+  loadTrack();
+  spawnRunes();
+  initParticles();
+});
 </script>
 </body>
 </html>
