@@ -226,7 +226,7 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
 <!-- ══ VIDEO SECTION 1 ══ -->
 <div class="vid-section" id="vs1" data-ytid="yebNIHKAC4A">
   <iframe class="vid-bg"
-    src="https://www.youtube.com/embed/yebNIHKAC4A?autoplay=1&mute=1&loop=1&playlist=yebNIHKAC4A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+    src="about:blank" data-src="https://www.youtube.com/embed/yebNIHKAC4A?autoplay=1&mute=1&loop=1&playlist=yebNIHKAC4A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <div class="vid-overlay"></div>
   <div class="section-content">
@@ -491,26 +491,23 @@ function enterPage() {
   loadTrack(true);
 }
 
-/* ── Scroll-triggered section audio (muted bg video swap) ── */
+/* ── Scroll-triggered section bg videos (all lazy, all muted) ── */
 function initScrollSections() {
   const sections = document.querySelectorAll('.vid-section');
 
-  // Load lazy iframes when in view
   const bgObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         const iframe = e.target.querySelector('.vid-bg');
+        // Load the bg video only when scrolled into view
         if (iframe && iframe.src === 'about:blank' && iframe.dataset.src) {
           iframe.src = iframe.dataset.src;
         }
+        // Fade it in shortly after
         setTimeout(() => e.target.classList.add('loaded'), 600);
       }
     });
   }, {threshold: 0.2});
-
-  // Fade in first section bg immediately
-  const vs1 = document.getElementById('vs1');
-  setTimeout(() => vs1.classList.add('loaded'), 800);
 
   sections.forEach(s => bgObs.observe(s));
 }
