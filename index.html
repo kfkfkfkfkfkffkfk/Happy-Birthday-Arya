@@ -24,19 +24,23 @@ body{
   height:100vh;
   overflow:hidden;
   display:flex;align-items:center;justify-content:center;
+  background:#04000d;
 }
 .vid-section iframe{
   position:absolute;
   top:50%;left:50%;
   transform:translate(-50%,-50%);
-  /* oversized so it fills even with letterboxing */
-  width:177.78vh; /* 16/9 * 100vh */
+  width:177.78vh;
   height:100vh;
   min-width:100%;
-  min-height:56.25vw; /* 9/16 * 100vw */
+  min-height:56.25vw;
   border:none;
   pointer-events:none;
+  /* start invisible — JS reveals after playback confirmed */
+  opacity:0;
+  transition:opacity 1.2s ease;
 }
+.vid-section.vid-loaded iframe{ opacity:1; }
 .vid-overlay{
   position:absolute;inset:0;
   z-index:2;
@@ -329,7 +333,11 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
         <span class="vol-icon">🔊</span>
       </div>
       <div class="playlist" id="playlist"></div>
-      <p class="note-about">⚠ Click a track · Requires internet · YouTube audio</p>
+      <p class="note-about">▶ Click play or a track to start · Audio streams via YouTube · Requires internet</p>
+    </div>
+    <!-- Hidden YouTube IFrame API player sits outside the card but inside the wrap -->
+    <div id="yt-container" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;top:-9999px;left:-9999px;">
+      <div id="yt-player"></div>
     </div>
   </div>
 </section>
@@ -350,138 +358,253 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
 <footer>CRAFTED WITH 🔥 FOR ARYA'S 15TH · KPOP DEMON HUNTERS · GONNA BE GOLDEN</footer>
 
 
+<!-- YouTube IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-/* ══════════════════════════════════════
-   FULL KPOP DEMON HUNTERS PLAYLIST
-══════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════
+   KPOP DEMON HUNTERS · FULL SOUNDTRACK PLAYER
+   Uses YouTube IFrame API — plays right here on the page,
+   no redirects, no popups, auto-advances, loops forever.
+══════════════════════════════════════════════════════ */
+
 const TRACKS = [
-  { name:"TAKEDOWN", artist:"TWICE (Jeongyeon, Jihyo, Chaeyoung)", theme:"TWICE × HUNTR/X · LEAD SINGLE", emoji:"⚡", ytId:"RIiHgjF3MSM", dur:"3:09" },
-  { name:"HOW IT'S DONE", artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · OPENING ANTHEM", emoji:"🔥", ytId:"dJDHiQ3FPCQ", dur:"3:22" },
-  { name:"SODA POP", artist:"Saja Boys", theme:"SAJA BOYS · BUBBLEGUM BOP", emoji:"🥤", ytId:"y2prmubAic4", dur:"2:58" },
-  { name:"GOLDEN", artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · GRAMMY WINNER · #1 UK", emoji:"✨", ytId:"yebNIHKAC4A", dur:"3:41" },
-  { name:"STRATEGY", artist:"TWICE", theme:"TWICE · COMEBACK TRACK", emoji:"🎯", ytId:"r0lI8zk4_o0", dur:"3:29" },
-  { name:"TAKEDOWN (HUNTR/X ver.)", artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · IN-FILM VERSION", emoji:"🗡️", ytId:"RIiHgjF3MSM", dur:"3:09" },
-  { name:"YOUR IDOL", artist:"Saja Boys", theme:"SAJA BOYS · VILLAIN SONG · #1 SPOTIFY", emoji:"😈", ytId:"2FS3JAPTKXs", dur:"3:15" },
-  { name:"FREE", artist:"Rumi & Jinu (EJAE, Andrew Choi)", theme:"RUMI × JINU · EMOTIONAL DUET", emoji:"🕊️", ytId:"d7NObM5bZtY", dur:"3:52" },
-  { name:"WHAT IT SOUNDS LIKE", artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · CLIMACTIC FINALE", emoji:"🎶", ytId:"8Q1GVoB4vDI", dur:"3:34" },
-  { name:"LOVE MAYBE", artist:"MeloMance", theme:"MELOMANCE · K-BALLAD", emoji:"💙", ytId:"u9QHEHJ4Af4", dur:"3:48" },
-  { name:"PATH", artist:"Jokers", theme:"JOKERS · PSYCH-POP INTERLUDE", emoji:"🌿", ytId:"_FYSf3mC6Gk", dur:"3:03" },
-  { name:"SCORE SUITE", artist:"Marcelo Zarvos", theme:"ORIGINAL ORCHESTRAL SCORE", emoji:"🎻", ytId:"yebNIHKAC4A", dur:"8:12" },
+  { name:"TAKEDOWN",              artist:"TWICE (Jeongyeon, Jihyo, Chaeyoung)",  theme:"TWICE × HUNTR/X · LEAD SINGLE",         emoji:"⚡", ytId:"RIiHgjF3MSM", dur:"3:09" },
+  { name:"HOW IT'S DONE",         artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · OPENING ANTHEM",               emoji:"🔥", ytId:"dJDHiQ3FPCQ", dur:"3:22" },
+  { name:"SODA POP",              artist:"Saja Boys",                            theme:"SAJA BOYS · BUBBLEGUM BOP",               emoji:"🥤", ytId:"y2prmubAic4", dur:"2:58" },
+  { name:"GOLDEN",                artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · GRAMMY WINNER · #1 UK",         emoji:"✨", ytId:"yebNIHKAC4A", dur:"3:41" },
+  { name:"STRATEGY",              artist:"TWICE",                                theme:"TWICE · COMEBACK TRACK",                  emoji:"🎯", ytId:"r0lI8zk4_o0", dur:"3:29" },
+  { name:"TAKEDOWN (HUNTR/X)",    artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · IN-FILM VERSION",               emoji:"🗡️", ytId:"RIiHgjF3MSM", dur:"3:09" },
+  { name:"YOUR IDOL",             artist:"Saja Boys",                            theme:"SAJA BOYS · VILLAIN SONG · #1 SPOTIFY",   emoji:"😈", ytId:"2FS3JAPTKXs", dur:"3:15" },
+  { name:"FREE",                  artist:"Rumi & Jinu (EJAE, Andrew Choi)",      theme:"RUMI × JINU · EMOTIONAL DUET",            emoji:"🕊️", ytId:"d7NObM5bZtY", dur:"3:52" },
+  { name:"WHAT IT SOUNDS LIKE",   artist:"HUNTR/X (EJAE, Audrey Nuna, REI AMI)", theme:"HUNTR/X · CLIMACTIC FINALE",              emoji:"🎶", ytId:"8Q1GVoB4vDI", dur:"3:34" },
+  { name:"LOVE MAYBE",            artist:"MeloMance",                            theme:"MELOMANCE · K-BALLAD",                    emoji:"💙", ytId:"u9QHEHJ4Af4", dur:"3:48" },
+  { name:"PATH",                  artist:"Jokers",                               theme:"JOKERS · PSYCH-POP INTERLUDE",            emoji:"🌿", ytId:"_FYSf3mC6Gk", dur:"3:03" },
+  { name:"SCORE SUITE",           artist:"Marcelo Zarvos",                       theme:"ORIGINAL ORCHESTRAL SCORE",               emoji:"🎻", ytId:"yebNIHKAC4A", dur:"8:12" },
 ];
 
-let current = 0, isPlaying = false;
+/* ─── State ─────────────────────────────────────────── */
+let current   = 0;
+let isPlaying = false;
+let ytPlayer  = null;
+let ytReady   = false;
+let pendingPlay = false;   // play was requested before API was ready
+let progressTimer = null;
 
-/* ── Build playlist UI ── */
-function buildPlaylist(){
+/* ─── YouTube IFrame API callback ────────────────────── */
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('yt-player', {
+    height: '1', width: '1',
+    videoId: TRACKS[0].ytId,
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      disablekb: 1,
+      fs: 0,
+      iv_load_policy: 3,
+      modestbranding: 1,
+      rel: 0,
+      playsinline: 1,
+      origin: window.location.origin || 'https://github.io'
+    },
+    events: {
+      onReady: onPlayerReady,
+      onStateChange: onPlayerStateChange
+    }
+  });
+}
+
+function onPlayerReady(e) {
+  ytReady = true;
+  setVol(document.getElementById('volSlider').value);
+  if (pendingPlay) { pendingPlay = false; ytPlayer.playVideo(); }
+}
+
+function onPlayerStateChange(e) {
+  // YT.PlayerState.ENDED = 0
+  if (e.data === YT.PlayerState.ENDED) {
+    current = (current + 1) % TRACKS.length;
+    loadTrack(true);
+  }
+  if (e.data === YT.PlayerState.PLAYING) {
+    isPlaying = true;
+    document.getElementById('playBtn').textContent = '⏸';
+    document.getElementById('albumArt').classList.add('spin');
+    updateVisualizer(true);
+    startProgressTimer();
+  }
+  if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
+    isPlaying = false;
+    document.getElementById('playBtn').textContent = '▶';
+    document.getElementById('albumArt').classList.remove('spin');
+    updateVisualizer(false);
+    clearInterval(progressTimer);
+  }
+}
+
+/* ─── Progress bar ───────────────────────────────────── */
+function startProgressTimer() {
+  clearInterval(progressTimer);
+  progressTimer = setInterval(() => {
+    if (!ytPlayer || !ytPlayer.getDuration) return;
+    const dur = ytPlayer.getDuration() || 0;
+    const cur = ytPlayer.getCurrentTime() || 0;
+    if (dur > 0) {
+      document.getElementById('progressFill').style.width = (cur / dur * 100) + '%';
+      document.getElementById('timeElapsed').textContent = fmtTime(cur);
+      document.getElementById('timeDuration').textContent = fmtTime(dur);
+    }
+  }, 500);
+}
+
+function fmtTime(s) {
+  s = Math.floor(s);
+  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+}
+
+/* Click progress bar to seek */
+document.getElementById('progressBar').addEventListener('click', function(e) {
+  if (!ytPlayer || !ytReady) return;
+  const pct = e.offsetX / this.offsetWidth;
+  ytPlayer.seekTo(ytPlayer.getDuration() * pct, true);
+});
+
+/* ─── Core controls ──────────────────────────────────── */
+function loadTrack(autoPlay) {
+  const t = TRACKS[current];
+  document.getElementById('trackName').textContent   = t.name;
+  document.getElementById('trackArtist').textContent = t.artist;
+  document.getElementById('trackTheme').textContent  = t.theme;
+  document.getElementById('albumArt').textContent    = t.emoji;
+  document.getElementById('timeDuration').textContent = t.dur;
+  document.getElementById('timeElapsed').textContent  = '0:00';
+  document.getElementById('progressFill').style.width = '0%';
+  buildPlaylist();
+  updateVisualizer(false);
+
+  if (ytReady && ytPlayer) {
+    ytPlayer.loadVideoById(t.ytId);
+    if (!autoPlay) { ytPlayer.stopVideo(); isPlaying = false; }
+    // loadVideoById autoplays by default — pause if not autoplaying
+    if (!autoPlay) setTimeout(() => ytPlayer.pauseVideo && ytPlayer.pauseVideo(), 300);
+  }
+}
+
+function togglePlay() {
+  if (!ytReady || !ytPlayer) { pendingPlay = true; return; }
+  if (isPlaying) {
+    ytPlayer.pauseVideo();
+  } else {
+    ytPlayer.playVideo();
+  }
+}
+
+function nextTrack() {
+  current = (current + 1) % TRACKS.length;
+  loadTrack(isPlaying);
+}
+
+function prevTrack() {
+  current = (current - 1 + TRACKS.length) % TRACKS.length;
+  loadTrack(isPlaying);
+}
+
+function setVol(v) {
+  if (ytPlayer && ytReady) ytPlayer.setVolume(parseInt(v));
+}
+
+/* ─── Playlist UI ────────────────────────────────────── */
+function buildPlaylist() {
   const pl = document.getElementById('playlist');
   pl.innerHTML = '';
-  TRACKS.forEach((t,i)=>{
+  TRACKS.forEach((t, i) => {
     const div = document.createElement('div');
-    div.className = 'pl-item' + (i===current?' active':'');
-    div.innerHTML = `<span class="pl-num">${i+1}</span>
+    div.className = 'pl-item' + (i === current ? ' active' : '');
+    div.innerHTML = `<span class="pl-num">${i + 1}</span>
       <span class="pl-emoji">${t.emoji}</span>
       <div class="pl-info">
         <div class="pl-name">${t.name}</div>
         <div class="pl-artist">${t.artist}</div>
       </div>
       <span class="pl-dur">${t.dur}</span>`;
-    div.onclick = ()=>{ current=i; loadTrack(); startPlay(); };
+    div.onclick = () => {
+      current = i;
+      loadTrack(true);
+      // loadVideoById starts playing automatically; state change handles UI
+    };
     pl.appendChild(div);
   });
 }
 
-function loadTrack(){
-  const t = TRACKS[current];
-  document.getElementById('trackName').textContent = t.name;
-  document.getElementById('trackArtist').textContent = t.artist;
-  document.getElementById('trackTheme').textContent = t.theme;
-  document.getElementById('albumArt').textContent = t.emoji;
-  document.getElementById('timeDuration').textContent = t.dur;
-  document.getElementById('timeElapsed').textContent = '0:00';
-  document.getElementById('progressFill').style.width = '0%';
-  buildPlaylist();
-  updateVisualizer(false);
-}
-
-function togglePlay(){
-  if(isPlaying) pausePlay(); else startPlay();
-}
-
-function startPlay(){
-  isPlaying = true;
-  document.getElementById('playBtn').textContent = '⏸';
-  document.getElementById('albumArt').classList.add('spin');
-  updateVisualizer(true);
-  const t = TRACKS[current];
-  window.open(`https://www.youtube.com/watch?v=${t.ytId}`, '_blank');
-}
-
-function pausePlay(){
-  isPlaying = false;
-  document.getElementById('playBtn').textContent = '▶';
-  document.getElementById('albumArt').classList.remove('spin');
-  updateVisualizer(false);
-}
-
-function nextTrack(){ current = (current+1)%TRACKS.length; loadTrack(); if(isPlaying) startPlay(); }
-function prevTrack(){ current = (current-1+TRACKS.length)%TRACKS.length; loadTrack(); if(isPlaying) startPlay(); }
-function setVol(v){}
-
-/* ── Visualizer bars ── */
-function updateVisualizer(on){
+/* ─── Visualizer bars ────────────────────────────────── */
+function updateVisualizer(on) {
   const viz = document.getElementById('visualizer');
   viz.innerHTML = '';
-  for(let i=0;i<22;i++){
+  for (let i = 0; i < 22; i++) {
     const b = document.createElement('div');
-    b.className = 'bar' + (on?' on':'');
-    b.style.cssText=`--spd:${(.25+Math.random()*.55).toFixed(2)}s;animation-delay:${(Math.random()*.4).toFixed(2)}s;height:${6+Math.random()*39}px;`;
+    b.className = 'bar' + (on ? ' on' : '');
+    b.style.cssText = `--spd:${(.25 + Math.random() * .55).toFixed(2)}s;animation-delay:${(Math.random() * .4).toFixed(2)}s;height:${6 + Math.random() * 39}px;`;
     viz.appendChild(b);
   }
 }
 
-/* ── Floating runes ── */
-function spawnRunes(){
+/* ─── Floating runes ─────────────────────────────────── */
+function spawnRunes() {
   const container = document.getElementById('runeContainer');
   const runes = ['⚡','✨','🔥','💀','🗡️','⚔️','🌙','💫','😈','🎵','👁️','🌸'];
-  for(let i=0;i<14;i++){
+  for (let i = 0; i < 14; i++) {
     const r = document.createElement('div');
     r.className = 'rune';
-    r.textContent = runes[Math.floor(Math.random()*runes.length)];
-    r.style.cssText = `left:${Math.random()*100}%;--dur:${7+Math.random()*9}s;--delay:${Math.random()*8}s;`;
+    r.textContent = runes[Math.floor(Math.random() * runes.length)];
+    r.style.cssText = `left:${Math.random() * 100}%;--dur:${7 + Math.random() * 9}s;--delay:${Math.random() * 8}s;`;
     container.appendChild(r);
   }
 }
 
-/* ── Particles ── */
-function initParticles(){
+/* ─── Particles ──────────────────────────────────────── */
+function initParticles() {
   const c = document.getElementById('particles');
   const ctx = c.getContext('2d');
   c.width = innerWidth; c.height = innerHeight;
-  window.addEventListener('resize',()=>{ c.width=innerWidth; c.height=innerHeight; });
-  const pts = Array.from({length:60},()=>({
-    x:Math.random()*c.width, y:Math.random()*c.height,
-    vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
-    r:Math.random()*1.8+.4,
-    col:['#dc143c','#ff0080','#bf00ff','#00ffff','#ffd700'][Math.floor(Math.random()*5)]
+  window.addEventListener('resize', () => { c.width = innerWidth; c.height = innerHeight; });
+  const pts = Array.from({ length: 60 }, () => ({
+    x: Math.random() * c.width, y: Math.random() * c.height,
+    vx: (Math.random() - .5) * .4, vy: (Math.random() - .5) * .4,
+    r: Math.random() * 1.8 + .4,
+    col: ['#dc143c','#ff0080','#bf00ff','#00ffff','#ffd700'][Math.floor(Math.random() * 5)]
   }));
-  (function loop(){
-    ctx.clearRect(0,0,c.width,c.height);
-    pts.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0)p.x=c.width; if(p.x>c.width)p.x=0;
-      if(p.y<0)p.y=c.height; if(p.y>c.height)p.y=0;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.col; ctx.globalAlpha=.55; ctx.fill();
+  (function loop() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = c.width; if (p.x > c.width) p.x = 0;
+      if (p.y < 0) p.y = c.height; if (p.y > c.height) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.col; ctx.globalAlpha = .55; ctx.fill();
     });
     requestAnimationFrame(loop);
   })();
 }
 
-/* ── Init ── */
-window.addEventListener('load',()=>{
-  loadTrack();
+/* ─── Background video fade-in ───────────────────────── */
+function initBgVideos() {
+  const sections = document.querySelectorAll('.vid-section');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Small delay so the iframe has time to receive autoplay
+        setTimeout(() => entry.target.classList.add('vid-loaded'), 800);
+      }
+    });
+  }, { threshold: 0.15 });
+  sections.forEach(s => obs.observe(s));
+}
+
+/* ─── Init ───────────────────────────────────────────── */
+window.addEventListener('load', () => {
+  loadTrack(false);
   spawnRunes();
   initParticles();
+  initBgVideos();
 });
 </script>
 </body>
