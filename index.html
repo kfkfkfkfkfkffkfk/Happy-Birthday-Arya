@@ -495,17 +495,26 @@ function initScrollSections() {
 
   const bgObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
+      const iframe = e.target.querySelector('.vid-bg');
       if (e.isIntersecting) {
-        const iframe = e.target.querySelector('.vid-bg');
-        // Load the bg video only when scrolled into view
+        // Stop all other section videos first
+        sections.forEach(s => {
+          if (s !== e.target) {
+            const other = s.querySelector('.vid-bg');
+            if (other && other.src !== 'about:blank' && other.dataset.src) {
+              other.src = 'about:blank';
+              s.classList.remove('loaded');
+            }
+          }
+        });
+        // Load and play this section's video
         if (iframe && iframe.src === 'about:blank' && iframe.dataset.src) {
           iframe.src = iframe.dataset.src;
         }
-        // Fade it in shortly after
         setTimeout(() => e.target.classList.add('loaded'), 600);
       }
     });
-  }, {threshold: 0.2});
+  }, {threshold: 0.5});
 
   sections.forEach(s => bgObs.observe(s));
 }
