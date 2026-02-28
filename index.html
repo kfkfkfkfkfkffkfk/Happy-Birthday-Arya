@@ -226,7 +226,7 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
 <!-- ══ VIDEO SECTION 1 ══ -->
 <div class="vid-section" id="vs1" data-ytid="yebNIHKAC4A">
   <iframe class="vid-bg"
-    src="about:blank" data-src="https://www.youtube.com/embed/yebNIHKAC4A?autoplay=1&mute=1&loop=1&playlist=yebNIHKAC4A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+    src="about:blank" data-src="https://www.youtube.com/embed/yebNIHKAC4A?autoplay=1&mute=0&loop=1&playlist=yebNIHKAC4A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <div class="vid-overlay"></div>
   <div class="section-content">
@@ -242,7 +242,7 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
 <!-- ══ VIDEO SECTION 2 ══ -->
 <div class="vid-section" id="vs2" data-ytid="y2prmubAic4">
   <iframe class="vid-bg"
-    src="about:blank" data-src="https://www.youtube.com/embed/y2prmubAic4?autoplay=1&mute=1&loop=1&playlist=y2prmubAic4&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+    src="about:blank" data-src="https://www.youtube.com/embed/y2prmubAic4?autoplay=1&mute=0&loop=1&playlist=y2prmubAic4&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <div class="vid-overlay"></div>
   <div class="section-content">
@@ -254,7 +254,7 @@ footer{text-align:center;padding:2rem;position:relative;z-index:10;color:rgba(25
 <!-- ══ VIDEO SECTION 3 ══ -->
 <div class="vid-section" id="vs3" data-ytid="2FS3JAPTKXs">
   <iframe class="vid-bg"
-    src="about:blank" data-src="https://www.youtube.com/embed/2FS3JAPTKXs?autoplay=1&mute=1&loop=1&playlist=2FS3JAPTKXs&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+    src="about:blank" data-src="https://www.youtube.com/embed/2FS3JAPTKXs?autoplay=1&mute=0&loop=1&playlist=2FS3JAPTKXs&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <div class="vid-overlay"></div>
   <div class="section-content">
@@ -486,9 +486,7 @@ function updateVisualizer(on) {
 /* ── Intro enter ── */
 function enterPage() {
   document.getElementById('intro').classList.add('hidden');
-  // Autoplay track 1 — user gesture satisfies browser autoplay policy
-  current = 0;
-  loadTrack(true);
+  // Music only plays when user hits play in the player — no autoplay
 }
 
 /* ── Scroll-triggered section bg videos (all lazy, all muted) ── */
