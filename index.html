@@ -485,38 +485,40 @@ function updateVisualizer(on) {
 }
 
 /* ── Intro enter ── */
+let introDismissed = false;
 function enterPage() {
+  introDismissed = true;
   document.getElementById('intro').classList.add('hidden');
-  // Kick off section 1 video (Golden) immediately on button click —
-  // this satisfies the browser gesture requirement for autoplay with sound
+
+  // Force-load Golden (vs1) immediately — the tap is the browser gesture
+  // that satisfies autoplay-with-sound policy
   const vs1 = document.getElementById('vs1');
   const iframe = vs1.querySelector('.vid-bg');
-  if (iframe && iframe.src === 'about:blank' && iframe.dataset.src) {
-    iframe.src = iframe.dataset.src;
-  }
+  iframe.src = iframe.dataset.src;
   setTimeout(() => vs1.classList.add('loaded'), 600);
 }
 
-/* ── Scroll-triggered section bg videos (all lazy, all muted) ── */
+/* ── Scroll-triggered section bg videos ── */
 function initScrollSections() {
   const sections = document.querySelectorAll('.vid-section');
 
   const bgObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
+      // Don't do anything until the intro has been dismissed
+      if (!introDismissed) return;
+
       const iframe = e.target.querySelector('.vid-bg');
       if (e.isIntersecting) {
-        // Stop all other section videos first
+        // Stop all other section videos
         sections.forEach(s => {
           if (s !== e.target) {
             const other = s.querySelector('.vid-bg');
-            if (other && other.src !== 'about:blank' && other.dataset.src) {
-              other.src = 'about:blank';
-              s.classList.remove('loaded');
-            }
+            other.src = 'about:blank';
+            s.classList.remove('loaded');
           }
         });
-        // Load and play this section's video
-        if (iframe && iframe.src === 'about:blank' && iframe.dataset.src) {
+        // Load this section's video if not already playing
+        if (iframe.src === 'about:blank' || iframe.src === window.location.href) {
           iframe.src = iframe.dataset.src;
         }
         setTimeout(() => e.target.classList.add('loaded'), 600);
