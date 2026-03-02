@@ -522,6 +522,10 @@ function initScrollSections() {
           iframe.src = iframe.dataset.src;
         }
         setTimeout(() => e.target.classList.add('loaded'), 600);
+      } else {
+        // Stop this video when it scrolls out of view
+        iframe.src = 'about:blank';
+        e.target.classList.remove('loaded');
       }
     });
   }, {threshold: 0.5});
